@@ -1,0 +1,53 @@
+﻿<Window xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"  x:Class="Terminal_XP.PortSelectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Terminal_XP"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="無線モジュールの接続" Closing="Window_Closing" ResizeMode="NoResize" Width="400" SizeToContent="Height">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="10" TextWrapping="Wrap"
+                   Text="Terminal-2025を使用するには、指定された無線モジュールを接続する必要があります。接続する無線モジュールを選択してください。"/>
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="シリアルポート" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox DockPanel.Dock="Top" x:Name="ComboBox_PortList" DropDownOpened="ComboBox_PortList_DropDownOpened" Margin="5" Grid.Column="1" />
+            <TextBlock Text="ボーレート" VerticalAlignment="Center" Margin="5" Grid.Row="1"/>
+            <ComboBox x:Name="ComboBox_Baudlate" IsEditable="True" Grid.Column="1" Grid.Row="1" Margin="5"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="5" Visibility="Collapsed"><!--将来的に実装予定-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="パリティビット" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox x:Name="ComboBox_ParityBit" Grid.Column="1" Grid.Row="0" Margin="5"/>
+            <TextBlock Text="データビット" VerticalAlignment="Center" Margin="5" Grid.Column="2"/>
+            <ComboBox x:Name="ComboBox_DataBit" Grid.Column="3" Margin="5"/>
+            <TextBlock Text="ストップビット" Margin="5" Grid.Row="1" VerticalAlignment="Center"/>
+            <ComboBox x:Name="ComboBox_StopBit" Grid.Column="1" Grid.Row="1" Margin="5"/>
+            <TextBlock Text="HandShake" Margin="5" Grid.Row="1" VerticalAlignment="Center" Grid.Column="2"/>
+            <ComboBox x:Name="ComboBox_Handshake" Grid.Column="3" Grid.Row="1" Margin="5"/>
+        </Grid>
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top">
+            <ui:Button x:Name="Button_Connect" Margin="5" Content="接続" Appearance="Primary" Click="Button_Connect_Click" />
+            <ui:Button x:Name="Button_Cancel" Margin="5" Content="キャンセル" IsCancel="True" Click="Button_Connect_Click" />
+        </StackPanel>
+    </DockPanel>
+</Window>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO.Ports;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +17,21 @@ namespace Terminal_XP
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SerialPort _serialPort = new SerialPort();
         public MainWindow()
         {
             InitializeComponent();
+
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string[]? portInfo = SerialPortConnection.GetSerialPortInformation();
+            if (portInfo != null)
+            {
+
+            }
+            else return;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Terminal_XP
     /// </summary>
     public partial class App : Application
     {
+        
     }
 
 }

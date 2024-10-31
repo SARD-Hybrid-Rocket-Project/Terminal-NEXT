@@ -1,0 +1,2 @@
+対応OS：Windows 10,11
+必須 .NET Runtime
