@@ -6,10 +6,16 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:Terminal_XP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
-            <MenuItem Header="メニュー" Click="MenuItem_Click"/>
+            <ui:MenuItem Header="ファイル" Icon="{ui:SymbolIcon Symbol=List20}">
+                <MenuItem x:Name="Button_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}"/>
+                <Separator/>
+                <MenuItem x:Name="Button_Quit" Header="終了" Icon="{ui:SymbolIcon Symbol=Dismiss20}"/>
+            </ui:MenuItem>
         </Menu>
+        <TextBlock/>
+        <ui:TextBlock x:Name="TextBlock_Clock" TextWrapping="Wrap"/>
     </DockPanel>
 </Window>

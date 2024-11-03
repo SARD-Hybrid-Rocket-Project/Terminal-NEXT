@@ -60,7 +60,6 @@ namespace Terminal_XP
             var SerialPortList = new ObservableCollection<COMPort>();
 
             var check = new System.Text.RegularExpressions.Regex("(COM[0-9]{1,3})");
-            int i = 0, j = 0;
 
             foreach(ManagementObject m in new ManagementClass("Win32_PnPEntity").GetInstances())//全てのPnPデバイスを調べ、シリアル通信を行うデバイスを追加
             {
@@ -73,11 +72,10 @@ namespace Terminal_XP
 
                     SerialPortList.Add(new COMPort { DeviceID = id, Description = caption });
                 }
-
             }
             return SerialPortList;
         }
-
+        
         private void ComboBox_PortList_DropDownOpened(object sender, EventArgs e)
         {
             InitializePortList();
