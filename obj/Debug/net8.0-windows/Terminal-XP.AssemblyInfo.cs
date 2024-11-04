@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Terminal-XP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b541deb126034cc73a4ea4ac146b8d19e38e91d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c22b506fe12e13f4bd4c8a8a60e0cb80c1808728")]
 [assembly: System.Reflection.AssemblyProductAttribute("Terminal-XP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Terminal-XP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

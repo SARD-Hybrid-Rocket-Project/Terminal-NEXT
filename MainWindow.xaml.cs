@@ -24,15 +24,17 @@ namespace Terminal_XP
         {
             InitializeComponent();
 
+            this.Title = "Terminal-XP" + " " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?. ToString() ?? string.Empty;
             InitializeClock();
         }
         private void InitializeClock()
         {
-            timer.Interval = TimeSpan.FromMilliseconds(250);
+            timer.Interval = TimeSpan.FromMilliseconds(100);
             timer.Tick += (sender, e) =>
             {
-
+                TextBlock_CurrentDate.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
             };
+            timer.Start();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

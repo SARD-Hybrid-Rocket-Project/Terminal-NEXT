@@ -6,16 +6,54 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:Terminal_XP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
+        Title="Terminal XP" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
-            <ui:MenuItem Header="ファイル" Icon="{ui:SymbolIcon Symbol=List20}">
-                <MenuItem x:Name="Button_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}"/>
-                <Separator/>
-                <MenuItem x:Name="Button_Quit" Header="終了" Icon="{ui:SymbolIcon Symbol=Dismiss20}"/>
-            </ui:MenuItem>
-        </Menu>
-        <TextBlock/>
-        <ui:TextBlock x:Name="TextBlock_Clock" TextWrapping="Wrap"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Menu>
+                <ui:MenuItem Header="ファイル" Icon="{ui:SymbolIcon Symbol=List20}">
+                    <MenuItem x:Name="Button_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="MenuItem_Click"/>
+                    <MenuItem x:Name="Button_Disconnect" Header="切断" Icon="{ui:SymbolIcon Symbol=PlugDisconnected20}" IsEnabled="False"/>
+                    <Separator/>
+                    <MenuItem x:Name="Button_Quit" Header="終了" Icon="{ui:SymbolIcon Symbol=Dismiss20}"/>
+                </ui:MenuItem>
+                <ui:MenuItem Header="編集" Icon="{ui:SymbolIcon Symbol=Edit20}">
+                    <MenuItem x:Name="Button_Setting" Header="設定" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
+                </ui:MenuItem>
+            </Menu>
+            <TextBlock Text="SARD Hybrid Rocket Project Terminal Application 2025 Experience Point" VerticalAlignment="Center" Grid.Column="1" Margin="5"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ui:TextBlock Text="Hello" Grid.Column="1" Background="Black" Foreground="White"/>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:AutoSuggestBox Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力"/>
+                <ui:Button Content="Send" Appearance="Primary" Grid.Column="1" Margin="5"/>
+            </Grid>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Background="#FFB941D7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Bottom">
+                <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="5" FontSize="20" Foreground="White"/>
+            </StackPanel>
+            <TextBlock Text="下山互換モードで実行中" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+        </Grid>
     </DockPanel>
 </Window>
