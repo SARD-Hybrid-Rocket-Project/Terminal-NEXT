@@ -24,7 +24,7 @@
             <TextBlock Text="ボーレート" VerticalAlignment="Center" Margin="5" Grid.Row="1"/>
             <ComboBox x:Name="ComboBox_Baudlate" IsEditable="True" Grid.Column="1" Grid.Row="1" Margin="5"/>
         </Grid>
-        <Grid DockPanel.Dock="Top" Margin="5" Visibility="Collapsed"><!--将来的に実装予定-->
+        <Grid DockPanel.Dock="Top" Margin="5" Visibility="Visible"><!--将来的に実装予定-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

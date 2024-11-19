@@ -7,15 +7,20 @@
         xmlns:local="clr-namespace:Terminal_XP"
         mc:Ignorable="d"
         Title="Terminal XP" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Menu>
                 <ui:MenuItem Header="ファイル" Icon="{ui:SymbolIcon Symbol=List20}">
-                    <MenuItem x:Name="Button_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="MenuItem_Click"/>
+                    <MenuItem x:Name="MenuItem_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="MenuItem_NewConnection_Click"/>
                     <MenuItem x:Name="Button_Disconnect" Header="切断" Icon="{ui:SymbolIcon Symbol=PlugDisconnected20}" IsEnabled="False"/>
                     <Separator/>
                     <MenuItem x:Name="Button_Quit" Header="終了" Icon="{ui:SymbolIcon Symbol=Dismiss20}"/>
@@ -26,16 +31,16 @@
             </Menu>
             <TextBlock Text="SARD Hybrid Rocket Project Terminal Application 2025 Experience Point" VerticalAlignment="Center" Grid.Column="1" Margin="5"/>
         </Grid>
-        <Grid DockPanel.Dock="Top">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ui:TextBlock Text="Hello" Grid.Column="1" Background="Black" Foreground="White"/>
+            <ui:TextBlock Text="Hello" Grid.Column="1" Background="Black" Foreground="White" Focusable="True"/>
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -45,15 +50,15 @@
                 <ui:Button Content="Send" Appearance="Primary" Grid.Column="1" Margin="5"/>
             </Grid>
         </Grid>
-        <Grid DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Background="#FFB941D7">
+        <Grid VerticalAlignment="Bottom" Background="#FFB941D7" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel VerticalAlignment="Bottom">
-                <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="5" FontSize="20" Foreground="White"/>
+            <StackPanel>
+                <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="5" Foreground="White"/>
             </StackPanel>
-            <TextBlock Text="下山互換モードで実行中" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+            <ui:TextBlock Text="互換モードで実行中" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
         </Grid>
-    </DockPanel>
+    </Grid>
 </Window>

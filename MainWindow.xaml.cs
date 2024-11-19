@@ -39,12 +39,13 @@ namespace Terminal_XP
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string[]? portInfo = SerialPortConnection.GetSerialPortInformation();
-            if (portInfo != null)
-            {
+        }
 
-            }
-            else return;
+        private void MenuItem_NewConnection_Click(object sender, RoutedEventArgs e)
+        {
+            var serialPortInfo = SerialPortConnection.GetSerialPortInformation();
+
+            SerialPortConnection.SerialPortConnect(serialPortInfo);
         }
     }
 }
