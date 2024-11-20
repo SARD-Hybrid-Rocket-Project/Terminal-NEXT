@@ -1,0 +1,25 @@
+<mxfile host="65bd71144e">
+    <diagram id="lW6d2szeBfjSh7wegpzJ" name="ページ1">
+        <mxGraphModel dx="685" dy="472" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1600" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="10" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="2" target="9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="App.xaml.cs&lt;br&gt;コンストラクタ" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="40" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="9" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="環境ファイル（&lt;strong&gt;&lt;code&gt;EnvironmentConfiguration&lt;/code&gt;&lt;/strong&gt;）&lt;br&gt;読み出し" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="140" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="ApplicationProfileのインスタンスを初期化" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="240" width="140" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -12,13 +12,16 @@ namespace FlightController
     public partial class App : Application
     {
         public ApplicationProfile Profile { get; private set; }
+        public EnvironmentConfiguration Config { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
         }
         public App()
         {
-            Profile = new ApplicationProfile();
+            Config = EnvironmentConfiguration.ReadConfiguration()
+
+            Profile = new ApplicationProfile(); //新しいApplicationProfileインスタンスを作成
         }
     }
 

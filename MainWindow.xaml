@@ -29,7 +29,7 @@
                     <MenuItem x:Name="Button_Setting" Header="設定" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
                 </ui:MenuItem>
             </Menu>
-            <TextBlock Text="SARD Hybrid Rocket Project Terminal Application 2025 Experience Point" VerticalAlignment="Center" Grid.Column="1" Margin="5"/>
+            <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="10,5,10,5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -40,7 +40,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ui:TextBlock Text="Hello" Grid.Column="1" Background="Black" Foreground="White" Focusable="True"/>
+            <ui:TextBlock Text="C:\Users\Luna&gt;echo Hello, world!" Grid.Column="1" Background="Black" Foreground="White" Focusable="True"/>
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -56,7 +56,6 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="5" Foreground="White"/>
             </StackPanel>
             <ui:TextBlock Text="互換モードで実行中" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
         </Grid>
