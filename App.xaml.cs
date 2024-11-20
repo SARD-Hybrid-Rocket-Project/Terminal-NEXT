@@ -19,9 +19,12 @@ namespace FlightController
         }
         public App()
         {
-            Config = EnvironmentConfiguration.ReadConfiguration()
+            Config = EnvironmentConfiguration.ReadConfiguration();
 
             Profile = new ApplicationProfile(); //新しいApplicationProfileインスタンスを作成
+
+            
+
         }
     }
 

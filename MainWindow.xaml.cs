@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using FlightController.Views;
+using System.IO.Ports;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using FlightController.Core;
 
 namespace FlightController
 {
@@ -18,13 +20,18 @@ namespace FlightController
     /// </summary>
     public partial class MainWindow : Window
     {
+        private App app;
+
+
         private DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.SystemIdle);
         private SerialPort _serialPort = new SerialPort();
         public MainWindow()
         {
             InitializeComponent();
 
-            this.Title = "FlightController" + " " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?. ToString() ?? string.Empty;
+            app = (App)App.Current;
+
+            this.Title = Constants.ApplicationName;
             InitializeClock();
         }
         private void InitializeClock()
@@ -46,6 +53,13 @@ namespace FlightController
             var serialPortInfo = SerialPortConnection.GetSerialPortInformation();
 
             SerialPortConnection.SerialPortConnect(serialPortInfo);
+        }
+
+        private void Button_EnvironmentalSetting_Click(object sender, RoutedEventArgs e)
+        {
+            EnvironmentSettingsDialog dialog = new EnvironmentSettingsDialog(app.Config);
+            dialog.Owner = this;
+            bool? result = dialog.ShowDialog();
         }
     }
 }

@@ -25,59 +25,61 @@ namespace FlightController.Core
         public TimeSpan ConnectionTimeout { get; set; }
 
         //システム設定
-        public string EnvironmentName { get; set; }
-        public string filePath { get; set; }
+        public string ProfileDirectory { get; set; }
+
+
+        //表示
+        public SystemTheme ApplicaitonTheme { get; set; }
+        public enum SystemTheme
+        {
+            Default = 0, Light = 1, Dark = 2
+        }
 
         public EnvironmentConfiguration()
         {
-            EnvironmentName = string.Empty;
-            filePath = string.Empty;
+            ApplicaitonTheme = SystemTheme.Default;
+            ProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
-
-
         public static EnvironmentConfiguration ReadConfiguration()//環境変数を読み込む。なければ新たに作る。
         {
             EnvironmentConfiguration config = new EnvironmentConfiguration();//環境変数インスタンスを初期化
 
+            if(!File.Exists(DefaultEnvironmentFilePath)) WriteConfiguration(config);//ファイルがないなら作る
+
             try//設定ファイルを読み込む
             {
-                string jsonString = File.ReadAllText(Path.Combine(DefaultEnvironmentFilePath));
+                string jsonString = File.ReadAllText(DefaultEnvironmentFilePath);
             }
-            catch (DirectoryNotFoundException ex)//そもそもディレクトリが無かった場合にディレクトリを作って、初期設定を保存する。
+            catch(Exception ex)
             {
-                try//ディレクトリを作成してファイルを保存する
-                {
-                    Directory.CreateDirectory(DefaultEnvironmentDirectory);//ディレクトリ作成
-                    File.Create(DefaultEnvironmentFilePath);//ファイル作成
-
-                    string jsonConfig = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });//jsonにシリアライズ
-
-                    File.WriteAllText(Path.Combine(DefaultEnvironmentFilePath), jsonConfig);//書き込み
-                }
-                catch (Exception e)//エラーが起きたら、エラーメッセージを出す。
-                {
-                    MessageBox.Show(e.ToString(), Constants.ApplicationName, MessageBoxButton.OK);
-                }
+                MessageBox.Show(ex.ToString(), "ReadConfiguration", MessageBoxButton.OK);
             }
-            catch (FileNotFoundException ex)//ファイルが見つからない場合
-            {
-                File.Create(DefaultEnvironmentFilePath);//ファイル作成
 
+            Debug.WriteLine("環境設定を正常に読み込めました");
+            return config;//configインスタンスを返す。
+        }
+        public static bool WriteConfiguration(EnvironmentConfiguration config)//環境設定を保存する
+        {
+            if(!Directory.Exists(DefaultEnvironmentDirectory)) Directory.CreateDirectory(DefaultEnvironmentDirectory);//ディレクトリがないなら
+            if (!File.Exists(DefaultEnvironmentFilePath)) using (File.Create(DefaultEnvironmentFilePath)) { }
+
+            try
+            {
                 string jsonConfig = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });//jsonにシリアライズ
 
-                File.WriteAllText(Path.Combine(DefaultEnvironmentFilePath), jsonConfig);//書き込み
+                File.WriteAllText(DefaultEnvironmentFilePath, jsonConfig);
+
+                return true;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), Constants.ApplicationName, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(e.ToString(), "WriteConfiguration", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            return config;//configインスタンスを返す。
+            return false;
         }
-        public static bool WriteConfiguration(EnvironmentConfiguration config)
+        public static void ShowEnvironmentalSetting()
         {
-            return true;
-        }
 
+        }
     }
 }

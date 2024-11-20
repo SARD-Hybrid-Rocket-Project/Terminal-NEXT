@@ -9,7 +9,7 @@
         Title="無線モジュールの接続" Closing="Window_Closing" ResizeMode="NoResize" Width="400" SizeToContent="Height">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Margin="10" TextWrapping="Wrap"
-                   Text="Terminal-2025を使用するには、指定された無線モジュールを接続する必要があります。接続する無線モジュールを選択してください。"/>
+                   Text="RCCを使用するには、指定された無線モジュールを接続する必要があります。接続する無線モジュールを選択してください。"/>
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -24,7 +24,7 @@
             <TextBlock Text="ボーレート" VerticalAlignment="Center" Margin="5" Grid.Row="1"/>
             <ComboBox x:Name="ComboBox_Baudlate" IsEditable="True" Grid.Column="1" Grid.Row="1" Margin="5"/>
         </Grid>
-        <Grid DockPanel.Dock="Top" Margin="5" Visibility="Visible"><!--将来的に実装予定-->
+        <Grid DockPanel.Dock="Top" Margin="5" Visibility="Collapsed"><!--将来的に実装予定-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
