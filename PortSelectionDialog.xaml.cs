@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.ObjectModel;
 
-namespace Terminal_XP
+namespace FlightController
 {
     /// <summary>
     /// PortSelectionDialogでやってること

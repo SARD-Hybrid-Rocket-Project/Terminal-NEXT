@@ -2,9 +2,9 @@
 using System.Data;
 using System.Diagnostics;
 using System.Windows;
-using Terminal_XP.Core;
+using FlightController.Core;
 
-namespace Terminal_XP
+namespace FlightController
 {
     /// <summary>
     /// Interaction logic for App.xaml

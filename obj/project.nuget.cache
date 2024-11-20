@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qOGCQk785lg=",
+  "dgSpecHash": "H9vgEXkNaQE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\Terminal-XP.csproj",
+  "projectFilePath": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\FlightController.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sinco\\.nuget\\packages\\runtime.linux-arm.runtime.native.system.io.ports\\8.0.0\\runtime.linux-arm.runtime.native.system.io.ports.8.0.0.nupkg.sha512",
     "C:\\Users\\sinco\\.nuget\\packages\\runtime.linux-arm64.runtime.native.system.io.ports\\8.0.0\\runtime.linux-arm64.runtime.native.system.io.ports.8.0.0.nupkg.sha512",

@@ -392,9 +392,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\Terminal-XP.csproj",
-      "projectName": "Terminal-XP",
-      "projectPath": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\Terminal-XP.csproj",
+      "projectUniqueName": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\FlightController.csproj",
+      "projectName": "FlightController",
+      "projectPath": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\FlightController.csproj",
       "packagesPath": "C:\\Users\\sinco\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\sinco\\Documents\\GitHub\\Terminal-XP\\obj\\",
       "projectStyle": "PackageReference",

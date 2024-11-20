@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terminal_XP.Core
+namespace FlightController.Core
 {
     public class ApplicationProfile
     {

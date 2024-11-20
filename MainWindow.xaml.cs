@@ -11,7 +11,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Terminal_XP
+namespace FlightController
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,7 +24,7 @@ namespace Terminal_XP
         {
             InitializeComponent();
 
-            this.Title = "Terminal-XP" + " " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?. ToString() ?? string.Empty;
+            this.Title = "FlightController" + " " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?. ToString() ?? string.Empty;
             InitializeClock();
         }
         private void InitializeClock()
