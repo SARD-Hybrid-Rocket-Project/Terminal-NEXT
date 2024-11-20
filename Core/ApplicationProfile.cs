@@ -9,11 +9,9 @@ namespace FlightController.Core
 {
     public class ApplicationProfile
     {
-        private SerialPort serialPort;
 
         public ApplicationProfile()
         {
-            serialPort = new SerialPort();
         }
     }
 }

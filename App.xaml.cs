@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO.Ports;
 using System.Windows;
 using FlightController.Core;
 
@@ -13,6 +14,8 @@ namespace FlightController
     {
         public ApplicationProfile Profile { get; private set; }
         public EnvironmentConfiguration Config { get; private set; }
+
+        public SerialPort serialPort { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -23,9 +26,9 @@ namespace FlightController
 
             Profile = new ApplicationProfile(); //新しいApplicationProfileインスタンスを作成
 
-            
-
+            serialPort = new SerialPort();
         }
+
     }
 
 }

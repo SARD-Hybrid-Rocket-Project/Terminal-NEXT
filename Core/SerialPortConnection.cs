@@ -27,6 +27,10 @@ namespace FlightController
             }
             return new SerialPortInformation(string.Empty, 0);
         }
+        public static void ConnectSerialPort(SerialPort serialPort, SerialPortInformation serialPortInformation)
+        {
+
+        }
         public static SerialPort SerialPortConnect(SerialPortInformation serialPortInformation)//シリアルポート接続用クラス
         {
             try
