@@ -121,7 +121,7 @@ namespace FlightController {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/FlightController;V1.0.0.0;component/portselectiondialog.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/FlightController;component/portselectiondialog.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\PortSelectionDialog.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
