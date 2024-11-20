@@ -400,3 +400,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 #binを除外
+/bin/
+/obj/
+/.vs/
