@@ -42,9 +42,6 @@ namespace FlightController
             ComboBox_PortList.SelectedValuePath = "DeviceID";
             ComboBox_PortList.DisplayMemberPath = "Description";
             ComboBox_PortList.SelectedIndex = 0;
-
-            if (ComboBox_PortList.Items.Count == 0) ComboBox_PortList.IsEnabled = false;
-            else ComboBox_PortList.IsEnabled = true;
         }
         private void InitializeBaudlateList()//ComboBox_Baudlateを初期化
         {

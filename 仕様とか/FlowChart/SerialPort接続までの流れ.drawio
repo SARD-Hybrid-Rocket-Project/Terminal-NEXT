@@ -28,7 +28,10 @@
                 <mxCell id="25" value="取得した情報を元にapp.xaml.csのserialPortManagementから接続" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="308" y="270" width="212" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="27" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="32" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="27" target="31">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="無線モジュールに&quot;RDID&quot;を送信" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="308" y="410" width="212" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="Cancel" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -36,6 +39,9 @@
                 </mxCell>
                 <mxCell id="30" value="OK" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
                     <mxGeometry x="420" y="220" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="無線モジュールに&quot;RDID&quot;を送信" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="308" y="510" width="212" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

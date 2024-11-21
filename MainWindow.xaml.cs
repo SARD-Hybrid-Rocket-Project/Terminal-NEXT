@@ -37,19 +37,28 @@ namespace FlightController
         }
         private void MainWindowInitialize()
         {
+            if (isSerialPortOpen())
+            {
+                Button_Disconnect.IsEnabled = true;
+                Button_InputBox_CommandSend.IsEnabled = true;
+            }
+            else
+            {
+                Button_Disconnect.IsEnabled = false;
+                Button_InputBox_CommandSend.IsEnabled = false;
+            }
+
             _InitializeClock();//時計を初期化
 
             if (isSerialPortOpen())
             {
                 InputBox_CommandInput.IsEnabled = true;
-                Button_InputBox_CommandSend.IsEnabled = true;
 
                 _IinitializeCommandInput();
             }
             else
             {
                 InputBox_CommandInput.IsEnabled = false;
-                Button_InputBox_CommandSend.IsEnabled = false;
             }
         }
         private void _InitializeClock()
@@ -72,7 +81,6 @@ namespace FlightController
         {
             var app = (App)App.Current;
             return app.serialPortManagement.GetSerialPort().IsOpen;
-
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -93,6 +101,31 @@ namespace FlightController
             EnvironmentSettingsDialog dialog = new EnvironmentSettingsDialog(app.Config);
             dialog.Owner = this;
             bool? result = dialog.ShowDialog();
+        }
+
+        private void Button_Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            var app = (App)App.Current;
+            app.serialPortManagement.Disconnect();
+
+            MainWindowInitialize();
+        }
+
+        private void InputBox_CommandInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SerialCommandSend(InputBox_CommandInput.Text);
+            }
+        }
+
+        private void Button_InputBox_CommandSend_Click(object sender, RoutedEventArgs e)
+        {
+            SerialCommandSend(InputBox_CommandInput.Text);
+        }
+        private void SerialCommandSend(string s)
+        {
+            app.serialPortManagement.GetSerialPort().WriteLine(s);
         }
     }
 }

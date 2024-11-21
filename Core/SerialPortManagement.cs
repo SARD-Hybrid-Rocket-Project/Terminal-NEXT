@@ -8,23 +8,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace FlightController
+namespace FlightController.Core
 {
     internal class SerialPortManagement
     {
-        public SerialPort serialPort;
+        private SerialPort serialPort;
+
+        internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;
+
+        internal enum WirelessModuleType
+        {
+            IM920, IM920SL, Xbee//IM920とXbeeは実装未定
+        }
         public SerialPortManagement()
         {
             serialPort = new SerialPort();
         }
-        public SerialPortManagement(SerialPort port)
-        {
-            serialPort = port;
-        }
 
-        public SerialPort GetSerialPort() {  return serialPort; }
+        internal SerialPort GetSerialPort() {  return serialPort; }
 
-        public static SerialPortInformation GetSerialPortInformation()
+        public static SerialPortInformation GetSerialPortInformation() //シリアルポート
         {
             PortSelectionDialog dialog = new PortSelectionDialog();
             bool? result = dialog.ShowDialog();
@@ -42,11 +45,6 @@ namespace FlightController
         }
         public void Connect(SerialPortInformation serialPortInformation)//指定されたシリアルポートに接続する。
         {
-            if (serialPortInformation.PortName == string.Empty)
-            {
-                MessageBox.Show("ポートを指定してください！");
-                return;
-            };
             try
             {
                 serialPort = new SerialPort(
@@ -58,11 +56,25 @@ namespace FlightController
                 );
 
                 serialPort.Open();//ポートを開く
-                MessageBox.Show("接続しました", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"{serialPortInformation.PortName}に接続しました", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception e)
             {
                 MessageBox.Show($"Failed to connect port {e.Message}");
+            }
+        }
+        public void Disconnect()
+        {
+            if (serialPort.IsOpen)
+            {
+                try
+                {
+                    serialPort.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Failed to disconnect port {e.Message}");
+                }
             }
         }
     }
