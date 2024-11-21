@@ -32,9 +32,27 @@ namespace FlightController
             app = (App)App.Current;
 
             this.Title = Constants.ApplicationName;
-            InitializeClock();
+
+            MainWindowInitialize();
         }
-        private void InitializeClock()
+        private void MainWindowInitialize()
+        {
+            _InitializeClock();//時計を初期化
+
+            if (isSerialPortOpen())
+            {
+                InputBox_CommandInput.IsEnabled = true;
+                Button_InputBox_CommandSend.IsEnabled = true;
+
+                _IinitializeCommandInput();
+            }
+            else
+            {
+                InputBox_CommandInput.IsEnabled = false;
+                Button_InputBox_CommandSend.IsEnabled = false;
+            }
+        }
+        private void _InitializeClock()
         {
             timer.Interval = TimeSpan.FromMilliseconds(100);
             timer.Tick += (sender, e) =>
@@ -43,6 +61,19 @@ namespace FlightController
             };
             timer.Start();
         }
+        private void _InitializeVisualLog()
+        {
+        }
+        private void _IinitializeCommandInput()
+        {
+
+        }
+        private bool isSerialPortOpen()//ポートが開いていたら入力ボックスを有効化する
+        {
+            var app = (App)App.Current;
+            return app.serialPortManagement.GetSerialPort().IsOpen;
+
+        }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -50,9 +81,11 @@ namespace FlightController
 
         private void MenuItem_NewConnection_Click(object sender, RoutedEventArgs e)
         {
-            var serialPortInfo = SerialPortConnection.GetSerialPortInformation();
+            //serialPortManagement.ConnectにGetSerialPortInformationで取得したシリアルポート情報を渡す
+            var app = (App)App.Current;
+            app.serialPortManagement.Connect(SerialPortManagement.GetSerialPortInformation());
 
-            SerialPortConnection.SerialPortConnect(serialPortInfo);
+            MainWindowInitialize();
         }
 
         private void Button_EnvironmentalSetting_Click(object sender, RoutedEventArgs e)

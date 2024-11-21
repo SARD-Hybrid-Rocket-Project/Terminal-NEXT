@@ -9,7 +9,7 @@
         Title="無線モジュールの接続" Closing="Window_Closing" ResizeMode="NoResize" Width="400" SizeToContent="Height">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Margin="10" TextWrapping="Wrap"
-                   Text="RCCを使用するには、指定された無線モジュールを接続する必要があります。接続する無線モジュールを選択してください。"/>
+                   Text="接続する無線モジュールを選択してください。"/>
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -47,7 +47,7 @@
 
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top">
             <ui:Button x:Name="Button_Connect" Margin="5" Content="接続" Appearance="Primary" Click="Button_Connect_Click" />
-            <ui:Button x:Name="Button_Cancel" Margin="5" Content="キャンセル" IsCancel="True" Click="Button_Connect_Click" />
+            <ui:Button x:Name="Button_Cancel" Margin="5" Content="キャンセル" IsCancel="True" Click="Button_Cancel_Click" />
         </StackPanel>
     </DockPanel>
 </Window>

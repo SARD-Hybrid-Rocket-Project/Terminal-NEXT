@@ -9,7 +9,8 @@ namespace FlightController.Core
 {
     public static class Constants
     {
-        public static string ProjectName = "SARD";
+        public static string Developer = "SARD";
+        public static string Development = "Shintaro Niwa";
         public static string ApplicationName = "FlightController";
     }
 }

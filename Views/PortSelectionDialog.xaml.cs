@@ -83,15 +83,16 @@ namespace FlightController
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            DialogResult = false;
         }
         private void Button_Connect_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            this.Close();
         }
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+            this.Close();
         }
     }
     public class COMPort

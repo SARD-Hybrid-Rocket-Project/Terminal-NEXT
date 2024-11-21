@@ -15,7 +15,7 @@ namespace FlightController.Core
         //定数
         public static string DefaultEnvironmentDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            Constants.ProjectName,
+            Constants.Developer,
             Constants.ApplicationName);//環境変数の保存場所を返す変数。場所はAppData\Local\SARD\FlightControllerを想定
 
         public static string DefaultEnvironmentFilePath = Path.Combine(DefaultEnvironmentDirectory, "config.json");

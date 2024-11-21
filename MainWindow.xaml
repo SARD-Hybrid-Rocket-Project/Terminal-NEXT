@@ -6,7 +6,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:FlightController"
         mc:Ignorable="d"
-        Title="Terminal XP" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
+        Title="Terminal XP" Height="720" Width="1280"  WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,6 +29,9 @@
                 <ui:MenuItem Header="編集" Icon="{ui:SymbolIcon Symbol=Edit20}">
                     <MenuItem x:Name="Button_Setting" Header="設定" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
                 </ui:MenuItem>
+                <ui:MenuItem Header="表示" Icon="{ui:SymbolIcon Symbol=Desktop20}">
+                    <MenuItem x:Name="Button_VisualLog"  Header="ログ" Icon="{ui:SymbolIcon Symbol=LineHorizontal320}"/>
+                </ui:MenuItem>
             </Menu>
             <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="10,5,10,5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
         </Grid>
@@ -36,20 +39,22 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ui:TextBlock Text="C:\Users\Luna&gt;echo Hello, world!" Grid.Column="1" Background="Black" Foreground="White" Focusable="True" FontSize="16"/>
+            <ui:TextBlock Grid.Column="1" Background="Black" Foreground="White" Focusable="True" FontSize="16"/>
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ui:AutoSuggestBox Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力"/>
-                <ui:Button Content="Send" Appearance="Primary" Grid.Column="1" Margin="5"/>
+                <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力"/>
+                <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5"/>
             </Grid>
+            <ui:TextBlock Grid.Row="2" Grid.Column="1" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Foreground="White"/>
         </Grid>
         <Grid VerticalAlignment="Bottom" Background="#FFB941D7" Grid.Row="2">
             <Grid.ColumnDefinitions>
