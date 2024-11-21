@@ -95,7 +95,7 @@ namespace FlightController
             this.Close();
         }
     }
-    public class COMPort
+    public struct COMPort
     {
         public required string DeviceID { get; set; }
         public required string Description { get; set; }

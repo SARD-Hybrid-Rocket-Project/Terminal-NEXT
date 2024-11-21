@@ -40,7 +40,7 @@ namespace FlightController
             }
             return new SerialPortInformation(string.Empty, 0);
         }
-        public void Connect(SerialPortInformation serialPortInformation)
+        public void Connect(SerialPortInformation serialPortInformation)//指定されたシリアルポートに接続する。
         {
             if (serialPortInformation.PortName == string.Empty)
             {
@@ -60,25 +60,13 @@ namespace FlightController
                 serialPort.Open();//ポートを開く
                 MessageBox.Show("接続しました", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (UnauthorizedAccessException e)
-            {
-                MessageBox.Show($"Failed to connect port {e.Message}");
-            }
-            catch (IOException e)
-            {
-
-            }
-            catch (ArgumentException e)
-            {
-                MessageBox.Show($"Failed to connect port {e.Message}");
-            }
             catch (Exception e)
             {
-
+                MessageBox.Show($"Failed to connect port {e.Message}");
             }
         }
     }
-    public class SerialPortInformation
+    public struct SerialPortInformation
     {
         public string PortName;
         public int BaudLate;
