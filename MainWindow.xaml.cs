@@ -33,9 +33,9 @@ namespace FlightController
 
             this.Title = Constants.ApplicationName;
 
-            MainWindowInitialize();
+            UpdateMainWindow();
         }
-        private void MainWindowInitialize()
+        private void UpdateMainWindow()
         {
             if (isSerialPortOpen())
             {
@@ -48,20 +48,21 @@ namespace FlightController
                 Button_InputBox_CommandSend.IsEnabled = false;
             }
 
-            _InitializeClock();//時計を初期化
+            UpdateClock();//時計を初期化
 
             if (isSerialPortOpen())
             {
                 InputBox_CommandInput.IsEnabled = true;
 
-                _IinitializeCommandInput();
+                UpdateCommandInput();
             }
             else
             {
                 InputBox_CommandInput.IsEnabled = false;
             }
+            UpdateSignalStrength(0);
         }
-        private void _InitializeClock()
+        private void UpdateClock()
         {
             timer.Interval = TimeSpan.FromMilliseconds(100);
             timer.Tick += (sender, e) =>
@@ -70,12 +71,26 @@ namespace FlightController
             };
             timer.Start();
         }
-        private void _InitializeVisualLog()
-        {
-        }
-        private void _IinitializeCommandInput()
+        private void UpdateCommandInput()
         {
 
+        }
+        private void UpdateSignalStrength(int Strength)
+        {
+            //後で処理追加
+            if(Strength >= Convert.ToByte(255))
+            {
+                Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularData120;
+            }
+            else if(Strength >= Convert.ToByte(100))
+            {
+                Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularData220;
+            }
+            else
+            {
+                Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularOff24;
+            }
+            TextBlock_SignalStrength.Text = $"信号強度 {Strength} dBm";
         }
         private bool isSerialPortOpen()//ポートが開いていたら入力ボックスを有効化する
         {
@@ -93,7 +108,7 @@ namespace FlightController
             var app = (App)App.Current;
             app.serialPortManagement.Connect(SerialPortManagement.GetSerialPortInformation());
 
-            MainWindowInitialize();
+            UpdateMainWindow();
         }
 
         private void Button_EnvironmentalSetting_Click(object sender, RoutedEventArgs e)
@@ -108,7 +123,7 @@ namespace FlightController
             var app = (App)App.Current;
             app.serialPortManagement.Disconnect();
 
-            MainWindowInitialize();
+            UpdateMainWindow();
         }
 
         private void InputBox_CommandInput_KeyDown(object sender, KeyEventArgs e)

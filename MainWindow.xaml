@@ -61,7 +61,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ui:SymbolIcon x:Name="Icon_SignalStrength" Margin="5" Foreground="White" Symbol="CellularData124"/>
+                <TextBlock x:Name="TextBlock_SignalStrength" Text="電波強度" Foreground="White" VerticalAlignment="Center"/>
             </StackPanel>
             <ui:TextBlock Text="互換モードで実行中" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
         </Grid>

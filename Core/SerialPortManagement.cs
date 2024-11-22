@@ -43,8 +43,10 @@ namespace FlightController.Core
             }
             return new SerialPortInformation(string.Empty, 0);
         }
-        public void Connect(SerialPortInformation serialPortInformation)//指定されたシリアルポートに接続する。
+        public void Connect(SerialPortInformation serialPortInformation)//指定されたシリアルポートに接続するメソッド
         {
+            if (serialPortInformation.PortName == string.Empty || serialPortInformation.BaudLate == 0) return;//ポート名が空だったら返す
+
             try
             {
                 serialPort = new SerialPort(
