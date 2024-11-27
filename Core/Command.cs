@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlightController.Core
+namespace MissionController.Core
 {
     public static class Command
     {

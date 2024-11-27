@@ -1,4 +1,4 @@
-﻿using FlightController.Core;
+﻿using MissionController.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FlightController.Views
+namespace MissionController.Views
 {
     /// <summary>
     /// EnvironmentSettingsDialog.xaml の相互作用ロジック

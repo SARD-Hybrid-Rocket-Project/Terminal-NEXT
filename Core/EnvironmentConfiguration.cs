@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace FlightController.Core
+namespace MissionController.Core
 {
     public class EnvironmentConfiguration
     {

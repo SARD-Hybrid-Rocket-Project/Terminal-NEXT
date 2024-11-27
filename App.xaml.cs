@@ -3,10 +3,10 @@ using System.Data;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Windows;
-using FlightController.Core;
-using FlightController.Views;
+using MissionController.Core;
+using MissionController.Views;
 
-namespace FlightController
+namespace MissionController
 {
     /// <summary>
     /// Interaction logic for App.xaml
