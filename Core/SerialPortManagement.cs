@@ -10,16 +10,17 @@ using System.Windows;
 
 namespace MissionController.Core
 {
+    public enum WirelessModuleType
+    {
+        IM920, IM920SL, Xbee//IM920とXbeeは実装未定
+    }
     internal class SerialPortManagement
     {
         private SerialPort serialPort;
+        internal SerialDataReceivedEventHandler dataReceivedHandler;
 
         internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;
 
-        internal enum WirelessModuleType
-        {
-            IM920, IM920SL, Xbee//IM920とXbeeは実装未定
-        }
         public SerialPortManagement()
         {
             serialPort = new SerialPort();
@@ -56,6 +57,7 @@ namespace MissionController.Core
                 serialPortInformation.DataBits,
                 serialPortInformation.StopBits
                 );
+                if (dataReceivedHandler != null) serialPort.DataReceived += dataReceivedHandler;
 
                 serialPort.Open();//ポートを開く
                 MessageBox.Show($"{serialPortInformation.PortName}に接続しました", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);

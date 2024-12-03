@@ -98,6 +98,24 @@ namespace MissionController
             return app.serialPortManagement.GetSerialPort().IsOpen;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
         }
@@ -128,19 +146,14 @@ namespace MissionController
 
         private void InputBox_CommandInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                SerialCommandSend(InputBox_CommandInput.Text);
-            }
+
         }
 
         private void Button_InputBox_CommandSend_Click(object sender, RoutedEventArgs e)
         {
-            SerialCommandSend(InputBox_CommandInput.Text);
         }
         private void SerialCommandSend(string s)
         {
-            app.serialPortManagement.GetSerialPort().WriteLine(s);
         }
     }
 }
