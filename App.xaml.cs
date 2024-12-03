@@ -41,7 +41,7 @@ namespace MissionController
             mainWindow.Show();
         }
         private void SerialDataReceived(Object sender,SerialDataReceivedEventArgs e)//シリアルポート受診時の処理
-        {
+        {//１バイトずつ処理しないように、<CR><LF>が来るまでためておく処理がいる。書け
             try
             {
                 string receivedData = serialPortManagement.GetSerialPort().ReadExisting();
