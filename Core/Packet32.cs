@@ -8,71 +8,89 @@ namespace MissionController.Core
 {
     public class Packet32
     {
+        //変数
+        public DataType Type { get; set; }
         public DateTime Timestamp { get; set; }
-        public string Message { get; set; }
+        public object Content { get; set; }
 
-        public Packet32()
+        public Packet32(DataType dataType, object content)
         {
+            //タイムスタンプはコンストラクタが呼ばれた時点での日時とする
             DateTime timestamp = DateTime.Now;
+
+            Type = dataType;
+            Content = content;
         }
 
-        internal static void Format(DataPrefix prefix, string data)//フォーマット
+        internal static string Format(DataType dataType, string data)//フォーマット
         {
+            return string.Empty;
         }
-        public static Packet32 Format(string data, WirelessModuleType type)//
+        
+    }
+    public class Packet32Handler
+    {
+        public PacketReceivedEventHandler PacketReceived;
+        public Packet32Handler(PacketReceivedEventHandler eventHandler)
         {
-            switch (type)
+            PacketReceived += eventHandler;
+        }
+        /// <summary>
+        /// Packet32形式の文字列をデコードします。
+        /// </summary>
+        /// <param name="data">byte形式の配列</param>
+        /// <returns></returns>
+        public static Packet32 Decode(byte[] data)
+        {
+            Packet32 packet = new Packet32(DataType.Nothing, 0);
+            switch (data[0])
             {
-                //IM920とIM920SLは文法が同じなので、同一処理でいい
-                case WirelessModuleType.IM920:
+                case 0x00:
+                    packet = new Packet32(
+                        DataType.Log,
+                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
                     break;
-
-                case WirelessModuleType.IM920SL:
-                    //ノード番号は受信文字列の4~7番目なので、該当箇所をbyte型変数に変換する
-                    ushort nodeNumber =Convert.ToUInt16($"{data[4]}{data[5]}{data[6]}{data[7]}", 16);
-                    //RSSI値は受信文字列の9~10番目なので、該当箇所をbyte型変数に変換して受信電力とする
-                    byte signalLevel = Convert.ToByte($"{data[9]}{data[10]}",16);
-
-                    //aa,bb,dddd:00,00,00,00,というIM920SLのデータ形式から、aa,bb,dddd:を消して、16進数配列にする。
-                    string userData = data.Split(':').Last();
-                    byte[] userData16Array = userData.Split(',').Select(x => Convert.ToByte(x, 16)).ToArray();
-                    return userData16Array;
-
+                case 0x01:
+                    packet = new Packet32(
+                        DataType.DebugLog,
+                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
+                    break;
+                case 0x02:
+                    packet = new Packet32(
+                        DataType.DebugNotification,
+                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
+                    break;
+                case 0x03:
+                    packet = new Packet32(
+                        DataType.DebugWarning,
+                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
+                    break;
+                case 0x04:
+                    packet = new Packet32(
+                        DataType.DebugError,
+                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
+                    break;
+                case 0x05:
+                    packet = new Packet32(
+                        DataType.DebugCriticalError,
+                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
+                    break;
+                case 0x10:
+                    packet = new Packet32(
+                        DataType.Command,
+                        data.Skip(1).ToArray());
+                    break;
                 default:
-                    return new byte[0];
+                    break;
             }
-        }
-        //public void Commander(DataSet data)
-        //{
-        //    byte h = data.HeadByte[0]; //ヘッダバイトの１バイト目を取得する
-        //    switch (h)
-        //    {
-        //        case 0x00: //ログハンドラを呼び出す
-        //            dLogHandler(data);
-        //            break;
-        //        case 0x01:
-        //            dCommandHandler(data);
-        //            break;
-        //        case 0x02:
-        //            dCommandResponceHandler(data);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
-        internal enum DataPrefix
-        {
-            Debug = 0x00, Command = 0x01, CommandResponce = 0x02, Telemetry = 0x10, 
+            return packet;
         }
     }
-    public class DataSet
+    public delegate void PacketReceivedEventHandler(Packet32 packet);
+    public enum DataType
     {
-        public Byte[] HeadByte;
-        public Byte[] DataValue;
-        public DataSet()
-        {
-            Byte[] data = new Byte[0];
-            Byte[] DataValue = new byte[0];
-        }
+        Log = 0x00, DebugLog = 0x01, DebugNotification = 0x02, DebugWarning = 0x03, DebugError = 0x04, DebugCriticalError = 0x05,
+        Command = 0x10,
+        Nothing = 0xFF
     }
 }

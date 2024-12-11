@@ -1,50 +1,56 @@
 <mxfile host="65bd71144e">
     <diagram id="vUIeG38WWE5ZPIOiv0nL" name="ページ1">
-        <mxGraphModel dx="778" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="856" dy="728" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="5" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="2" target="4">
+                <mxCell id="5" value="" style="edgeStyle=none;html=1;" parent="1" source="2" target="4" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="2" value="App.xaml.csの&lt;br&gt;コンストラクタ呼び出し" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="2" value="App.xaml.csの&lt;br&gt;コンストラクタ呼び出し" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="328" y="40" width="172" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="4" target="6">
+                <mxCell id="7" value="" style="edgeStyle=none;html=1;" parent="1" source="4" target="6" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="設定ファイル読み込み" style="rounded=0;whiteSpace=wrap;html=1;glass=0;" vertex="1" parent="1">
+                <mxCell id="4" value="設定ファイル読み込み" style="rounded=0;whiteSpace=wrap;html=1;glass=0;" parent="1" vertex="1">
                     <mxGeometry x="328" y="180" width="172" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="6" target="8">
+                <mxCell id="9" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="8" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="ApplicationProfileのインスタンスを作る" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" vertex="1" parent="1">
+                <mxCell id="6" value="ApplicationProfileのインスタンスを作る" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" parent="1" vertex="1">
                     <mxGeometry x="328" y="320" width="172" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="17" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="8" target="16">
+                <mxCell id="17" value="" style="edgeStyle=none;html=1;" parent="1" source="8" target="16" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="シリアル通信用のシリアルポートインスタンスを作る" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" vertex="1" parent="1">
+                <mxCell id="8" value="シリアル通信用のシリアルポートインスタンスを作る" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" parent="1" vertex="1">
                     <mxGeometry x="328" y="460" width="172" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="10" target="14">
+                <mxCell id="15" value="" style="edgeStyle=none;html=1;" parent="1" source="10" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="MainWindowを宣言・表示" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" vertex="1" parent="1">
+                <mxCell id="10" value="MainWindowを表示" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" parent="1" vertex="1">
                     <mxGeometry x="748" y="180" width="172" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="13" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="12" target="10">
+                <mxCell id="13" value="" style="edgeStyle=none;html=1;" parent="1" source="12" target="10" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="OnStartup呼び出し" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;sketch=0;" vertex="1" parent="1">
+                <mxCell id="12" value="OnStartup呼び出し" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;sketch=0;" parent="1" vertex="1">
                     <mxGeometry x="744" y="40" width="180" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="MainWindowを宣言・表示" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" vertex="1" parent="1">
+                <mxCell id="14" value="MainWindowを宣言・表示" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" parent="1" vertex="1">
                     <mxGeometry x="748" y="320" width="172" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="16" value="シリアル受信処理クラスをインスタンスを作る" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" vertex="1" parent="1">
+                <mxCell id="19" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="16" target="18">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="シリアル受信処理クラスをインスタンスを作る" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" parent="1" vertex="1">
                     <mxGeometry x="328" y="600" width="172" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="MainWindowを初期化" style="rounded=0;whiteSpace=wrap;html=1;glass=0;shadow=0;" vertex="1" parent="1">
+                    <mxGeometry x="328" y="740" width="172" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

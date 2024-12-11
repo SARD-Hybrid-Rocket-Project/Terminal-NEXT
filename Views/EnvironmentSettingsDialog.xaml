@@ -11,26 +11,9 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TabControl>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <ui:SymbolIcon Margin="0,0,6,0" Symbol="Wrench20"/>
-                        <TextBlock Text="設定"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <TextBlock Text="Hello"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <ui:SymbolIcon Margin="0,0,6,0" Symbol="Wrench20"/>
-                        <TextBlock Text="表示"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <TextBlock Text="OP"/>
-            </TabItem>
-        </TabControl>
+        <Grid>
+            <TextBlock Text="テーマ"/>
+        </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
             <ui:Button Content="OK" Appearance="Primary" Margin="5"/>
             <ui:Button Content="Cancel" Margin="5"/>

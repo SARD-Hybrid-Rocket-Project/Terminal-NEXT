@@ -16,19 +16,23 @@ namespace MissionController.Core
     }
     internal class SerialPortManagement
     {
-        private SerialPort serialPort;
-        internal SerialDataReceivedEventHandler dataReceivedHandler;
+        //変数
+        internal bool IsSending { get; private set; }
+        internal SerialPort SerialPort { get; private set; }
+        internal SerialDataReceivedEventHandler DataReceivedEventHandler;
+        internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;//要修正
 
-        internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;
-
-        public SerialPortManagement()
+        internal enum SendType
         {
-            serialPort = new SerialPort();
+            Command = 0, Broadcast = 1, 
+        }
+        internal SerialPortManagement()
+        {
+            IsSending = false;
+            SerialPort = new SerialPort();
         }
 
-        internal SerialPort GetSerialPort() {  return serialPort; }
-
-        public static SerialPortInformation GetSerialPortInformation() //シリアルポート
+        internal static SerialPortInformation GetSerialPortInformation()//シリアルポート情報を取得するメソッド
         {
             PortSelectionDialog dialog = new PortSelectionDialog();
             bool? result = dialog.ShowDialog();
@@ -44,36 +48,42 @@ namespace MissionController.Core
             }
             return new SerialPortInformation(string.Empty, 0);
         }
-        public void Connect(SerialPortInformation serialPortInformation)//指定されたシリアルポートに接続するメソッド
+        internal bool Connect(SerialPortInformation serialPortInformation)//指定されたシリアルポートに接続するメソッド
         {
-            if (serialPortInformation.PortName == string.Empty || serialPortInformation.BaudLate == 0) return;//ポート名が空だったら返す
+            if (serialPortInformation.PortName == string.Empty || serialPortInformation.BaudLate == 0) return false;//ポート名が空だったら返す
 
             try
             {
-                serialPort = new SerialPort(
-                serialPortInformation.PortName,
-                serialPortInformation.BaudLate,
-                serialPortInformation.Parity,
-                serialPortInformation.DataBits,
-                serialPortInformation.StopBits
-                );
-                if (dataReceivedHandler != null) serialPort.DataReceived += dataReceivedHandler;
+                SerialPort = new SerialPort()
+                {
+                    PortName = serialPortInformation.PortName,
+                    BaudRate = serialPortInformation.BaudLate,
+                    DataBits = serialPortInformation.DataBits,
+                    Parity = serialPortInformation.Parity,
+                    StopBits = serialPortInformation.StopBits,
+                    Handshake = serialPortInformation.Handshake,
+                };
+                SerialPort.DataReceived += DataReceivedEventHandler;
 
-                serialPort.Open();//ポートを開く
+
+                SerialPort.Open();//ポートを開く
+
                 MessageBox.Show($"{serialPortInformation.PortName}に接続しました", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception e)
             {
                 MessageBox.Show($"Failed to connect port {e.Message}");
+                return false;
             }
+            return true;
         }
         public void Disconnect()
         {
-            if (serialPort.IsOpen)
+            if (SerialPort.IsOpen)
             {
                 try
                 {
-                    serialPort.Close();
+                    SerialPort.Close();
                 }
                 catch (Exception e)
                 {
@@ -81,6 +91,32 @@ namespace MissionController.Core
                 }
             }
         }
+        public void Send(SendType type, string data)//データを送信するメソッド
+        {
+            string command = string.Empty;
+            switch (type)
+            {
+                case SendType.Command:
+                    command = data;
+                    break;
+                case SendType.Broadcast:
+                    command = "TXDA " + data;
+                    break;
+            }
+            if (SerialPort.IsOpen && IsSending == false)
+            {
+                IsSending = true;
+                try
+                {
+                    SerialPort.Write(command);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Failed to send data {e.Message}");
+                }
+            }
+        }
+
     }
     public struct SerialPortInformation
     {
@@ -90,7 +126,7 @@ namespace MissionController.Core
         public byte DataBits = 8;
         public Parity Parity = Parity.None;
         public StopBits StopBits = StopBits.One;
-        Handshake Handshake = Handshake.None;
+        public Handshake Handshake = Handshake.None;
 
         public SerialPortInformation(string portName, int baudLate)
         {

@@ -24,7 +24,6 @@ namespace MissionController
 
 
         private DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.SystemIdle);
-        private SerialPort _serialPort = new SerialPort();
         public MainWindow()
         {
             InitializeComponent();
@@ -95,7 +94,7 @@ namespace MissionController
         private bool isSerialPortOpen()//ポートが開いていたら入力ボックスを有効化する
         {
             var app = (App)App.Current;
-            return app.serialPortManagement.GetSerialPort().IsOpen;
+            return app.serialPortManagement.SerialPort.IsOpen;
         }
 
 
@@ -151,6 +150,7 @@ namespace MissionController
 
         private void Button_InputBox_CommandSend_Click(object sender, RoutedEventArgs e)
         {
+            app.LogAddEvent(new LogData(DateTime.Now, LogType.DebugLog, "Helloworld"));
         }
         private void SerialCommandSend(string s)
         {
