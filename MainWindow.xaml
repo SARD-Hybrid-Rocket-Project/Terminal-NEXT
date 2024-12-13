@@ -54,9 +54,9 @@
                 <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
                 <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="Button_InputBox_CommandSend_Click"/>
             </Grid>
-            <RichTextBox x:Name="TextBox_DebugLog" SelectionTextBrush="Black" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Focusable="True" Background="Black" Foreground="White" FontSize="16">
+            <RichTextBox x:Name="TextBox_DebugLog" SelectionTextBrush="Black" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Focusable="True" Background="Black" Foreground="White" FontSize="12">
                 <RichTextBox.Document>
-                    <FlowDocument LineHeight="11" LineStackingStrategy="BlockLineHeight"/>
+                    <FlowDocument LineHeight="12" LineStackingStrategy="BlockLineHeight"/>
                 </RichTextBox.Document>
             </RichTextBox>
         </Grid>

@@ -28,11 +28,13 @@ namespace MissionController
         public EnvironmentConfiguration Config { get; private set; }
         public Packet32Handler PacketHandler { get; private set; }
 
-        internal VisualLog VLog { get; private set; }//lol
+        internal SystemLog VLog { get; private set; }//lol
 
         public App()
         {
-            VLog = new VisualLog();
+            log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));//log4netの初期化
+
+            VLog = new SystemLog();
 
             //設定ファイル読み込み
             Config = EnvironmentConfiguration.ReadConfiguration();
@@ -124,18 +126,16 @@ namespace MissionController
             Run time = new Run(data.Time.ToString(" HH:mm:ss:fff "));//時間
             switch (data.Type)
             {
-                case LogType.Log:
+                case LogType.LOG:
                     logAttribute.Background = Brushes.White;
                     break;
-                case LogType.DebugLog:
-                    logAttribute.Background = Brushes.Red;
+                case LogType.DEBUG:
+                    logAttribute.Background = Brushes.Green;
                     break;
             }
             log.Inlines.Add(logAttribute);
-            log.Inlines.Add(" ");
             log.Inlines.Add(time);
-            log.Inlines.Add(" ");
-            log.Inlines.Add(":" + data.Content);
+            log.Inlines.Add(data.Content);
             mainWindow.TextBox_DebugLog.Document.Blocks.Add(log);
             mainWindow.TextBox_DebugLog.ScrollToEnd();
         }

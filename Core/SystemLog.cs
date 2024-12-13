@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MissionController.Core
 {
-    public class VisualLog
+    public class SystemLog
     {
         public delegate void LoggingEventHandler(LogData data);
         public LoggingEventHandler? LogAddEvent;
         public LoggingEventHandler? LogClearEvent;
         List<LogData> logList;
-        public VisualLog()
+        public SystemLog()
         {
             LogAddEvent = null;
             logList = new List<LogData>();
@@ -45,9 +45,9 @@ namespace MissionController.Core
     }
     public enum LogType
     {
-        Log,
-        DebugLog,
-        DebugNotification,
+        LOG,
+        DEBUG,
+        Notification,
         Error,
         Warning,
         Information
