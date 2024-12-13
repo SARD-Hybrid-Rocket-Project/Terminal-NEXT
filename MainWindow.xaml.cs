@@ -149,7 +149,6 @@ namespace MissionController
 
         private void Button_InputBox_CommandSend_Click(object sender, RoutedEventArgs e)
         {
-            app.LogAddEvent(new LogData(DateTime.Now, LogType.DEBUG, "Helloworld"));
         }
         private void SerialCommandSend(string s)
         {

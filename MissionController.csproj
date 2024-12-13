@@ -29,4 +29,10 @@
     <PackageReference Include="WPF-UI" Version="3.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

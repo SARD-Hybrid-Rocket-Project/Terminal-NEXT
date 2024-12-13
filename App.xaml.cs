@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml.Linq;
+using log4net;
 using MissionController.Core;
 using MissionController.Views;
 
@@ -17,24 +18,23 @@ namespace MissionController
     /// </summary>
     public partial class App : Application
     {
-        internal MainWindow mainWindow;//メインウィンドウ
+        //ロガー
+        private static readonly ILog log = LogManager.GetLogger(typeof(App));
+        //メインウィンドウ
+        internal MainWindow mainWindow;
         //無線接続関連
         internal SerialPortManagement serialPortManagement { get; private set; }
         private string receivedDataBuffer = string.Empty;
-        
 
         //環境変数・プロファイルのクラス
         public ApplicationProfile Profile { get; private set; }
         public EnvironmentConfiguration Config { get; private set; }
         public Packet32Handler PacketHandler { get; private set; }
 
-        internal SystemLog VLog { get; private set; }//lol
-
         public App()
         {
             log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));//log4netの初期化
-
-            VLog = new SystemLog();
+            log.Info("ロガーの初期化完了");
 
             //設定ファイル読み込み
             Config = EnvironmentConfiguration.ReadConfiguration();
@@ -116,29 +116,29 @@ namespace MissionController
             }
             //受信したパケットの処理
         }
-        internal void LogAddEvent(LogData data)
-        {
-            //ログ追加時の処理
-            Paragraph log = new Paragraph();//ログの段落
-            log.FontFamily = new FontFamily("Consolas");
+        //internal void LogAddEvent(LogData data)
+        //{
+        //    //ログ追加時の処理
+        //    Paragraph log = new Paragraph();//ログの段落
+        //    log.FontFamily = new FontFamily("Consolas");
 
-            Run logAttribute = new Run(" " + data.Type.ToString() + " ");
-            Run time = new Run(data.Time.ToString(" HH:mm:ss:fff "));//時間
-            switch (data.Type)
-            {
-                case LogType.LOG:
-                    logAttribute.Background = Brushes.White;
-                    break;
-                case LogType.DEBUG:
-                    logAttribute.Background = Brushes.Green;
-                    break;
-            }
-            log.Inlines.Add(logAttribute);
-            log.Inlines.Add(time);
-            log.Inlines.Add(data.Content);
-            mainWindow.TextBox_DebugLog.Document.Blocks.Add(log);
-            mainWindow.TextBox_DebugLog.ScrollToEnd();
-        }
+        //    Run logAttribute = new Run(" " + data.Type.ToString() + " ");
+        //    Run time = new Run(data.Time.ToString(" HH:mm:ss:fff "));//時間
+        //    switch (data.Type)
+        //    {
+        //        case LogType.LOG:
+        //            logAttribute.Background = Brushes.White;
+        //            break;
+        //        case LogType.DEBUG:
+        //            logAttribute.Background = Brushes.Green;
+        //            break;
+        //    }
+        //    log.Inlines.Add(logAttribute);
+        //    log.Inlines.Add(time);
+        //    log.Inlines.Add(data.Content);
+        //    mainWindow.TextBox_DebugLog.Document.Blocks.Add(log);
+        //    mainWindow.TextBox_DebugLog.ScrollToEnd();
+        //}
     }
 
 }
