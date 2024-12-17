@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,17 +11,24 @@ namespace MissionController.Core
     public class Packet32
     {
         //変数
+        public ushort NodeNumber { get; set; } = 0xFFFF;
+        public byte RSSI { get; set; } = 0x00;
         public DataType Type { get; set; }
-        public DateTime Timestamp { get; set; }
-        public object Content { get; set; }
+        public byte[] Data { get; set; }
+        public DateTime Timestamp { get; set; } = DateTime.Now;
 
-        public Packet32(DataType dataType, object content)
+        //Packet32のコンストラクタ
+        public Packet32(DataType dataType, byte[] content)
         {
-            //タイムスタンプはコンストラクタが呼ばれた時点での日時とする
-            DateTime timestamp = DateTime.Now;
-
             Type = dataType;
-            Content = content;
+            Data = content;
+        }
+        public Packet32(ushort nodeNumber, byte rssi, DataType dataType, byte[] data)
+        {
+            NodeNumber = nodeNumber;
+            RSSI = rssi;
+            Type = dataType;
+            Data = data;
         }
 
         internal static string Format(DataType dataType, string data)//フォーマット
@@ -36,58 +45,41 @@ namespace MissionController.Core
             PacketReceived += eventHandler;
         }
         /// <summary>
-        /// Packet32形式の文字列をデコードします。
+        /// Packet32形式をシリアライズします。
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
+        public static string Serialize(Packet32 packet)
+        {
+            //packet.Typeを16進数に変換して、Contentをカンマ区切りの文字列に変換して返す
+            return ((byte)packet.Type).ToString("X2") + BitConverter.ToString((byte[])packet.Data).Replace("-", ",");
+        }
+        /// <summary>
+        /// 文字列をPacket32形式にデコードします。
         /// </summary>
         /// <param name="data">byte形式の配列</param>
         /// <returns></returns>
-        public static Packet32 Decode(byte[] data)
+        public static Packet32 Deserialize(string data)
         {
-            Packet32 packet = new Packet32(DataType.Nothing, 0);
-            switch (data[0])
-            {
-                case 0x00:
-                    packet = new Packet32(
-                        DataType.Log,
-                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
-                    break;
-                case 0x01:
-                    packet = new Packet32(
-                        DataType.DebugLog,
-                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
-                    break;
-                case 0x02:
-                    packet = new Packet32(
-                        DataType.DebugNotification,
-                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
-                    break;
-                case 0x03:
-                    packet = new Packet32(
-                        DataType.DebugWarning,
-                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
-                    break;
-                case 0x04:
-                    packet = new Packet32(
-                        DataType.DebugError,
-                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
-                    break;
-                case 0x05:
-                    packet = new Packet32(
-                        DataType.DebugCriticalError,
-                        Encoding.ASCII.GetString(data.Skip(1).ToArray()));
-                    break;
-                case 0x10:
-                    packet = new Packet32(
-                        DataType.Command,
-                        data.Skip(1).ToArray());
-                    break;
-                default:
-                    break;
-            }
-            return packet;
+            //データの分解
+            //ノード番号である、文字列の4文字目から4文字取得
+            ushort node = Convert.ToUInt16(data.Substring(4, 4), 16);
+            //RSSI値を取得
+            byte rssi = Convert.ToByte(data.Substring(9, 2), 16);
+            //ユーザーデータを取得
+            byte[] userData = data
+                .Substring(11)
+                .Split(',')
+                .Select(hex => Convert.ToByte(hex, 16))
+                .ToArray();
+
+            //デフォルトはDataType.Nothing
+            DataType type = DataType.Nothing;
+            //data[0]がDataTypeに含まれているか確認し、含まれていればtypeにキャストする
+            if (Enum.IsDefined(typeof(DataType), userData[0])) type = (DataType)userData[0];
+            //Packet32を生成して返す
+            return new Packet32(node, rssi, type, userData.Skip(1).ToArray());
         }
-        //public static byte[] Encode(DataType dataType, string str)
-        //{
-        //}
     }
     public delegate void PacketReceivedEventHandler(Packet32 packet);
     public enum DataType

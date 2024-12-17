@@ -35,7 +35,6 @@ namespace MissionController
                 mainWindow?.UpdateSignalStrength(value);
             }
         }
-        private string receivedDataBuffer = string.Empty;
 
         //環境変数・プロファイルのクラス
         public ApplicationProfile Profile { get; private set; }
@@ -56,14 +55,13 @@ namespace MissionController
             Profile = new ApplicationProfile();
             log.Debug("Created application profile");
 
-            //ワイヤレスモジュールの制御クラスをインスタンス化
-            wirelessModule = new WirelessModule();
-            wirelessModule.DataReceivedEventHandler += SerialDataReceived;//シリアルポート受信時のイベント
+            //ワイヤレスモジュールの制御クラスをインスタンス化し、イベントを設定
+            wirelessModule = new WirelessModule()
+            {
+                DataReceivedEvent = WModuleDataReceived,
+                CommandResponceEvent = CommandResponceEventHandler
+            };
             log.Debug("WirelessModuleクラスのインスタンスwirelessModuleを初期化");
-
-            //謎
-            PacketHandler = new Packet32Serializer(PacketReceivedEvent);
-
 
             //コンストラクタの最後でMainWindowを初期化する。表示はしない。
             mainWindow = new MainWindow();
@@ -74,81 +72,44 @@ namespace MissionController
 
             mainWindow?.Show();
         }
-        private void SerialDataReceived(Object sender,SerialDataReceivedEventArgs e)//シリアルポート受信時のイベント
+
+        //メソッドとか
+        public void Send(Packet32 packet)
         {
-            try
-            {
-                //受け取ったデータをバッファ用変数に追加する。
-                receivedDataBuffer += wirelessModule.serialPort.ReadExisting();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Received: {ex}");
-                throw;
-            }
-            
-            //改行コード（CRLF）が見つかったらデータを出力する
-            if (receivedDataBuffer.Contains("\r\n"))//データはaa,bb,dddd:の形式で送られてくる
-            {
-                //IM920の固有コマンドレスポンスのチェック
-                if (receivedDataBuffer.Contains("OK") || receivedDataBuffer.Contains("NG"))
-                {   
-                    return;
-                }
+            Packet32Serializer.Serialize(packet);
+        }
 
-                //データの分解
-                string nodeNumber = receivedDataBuffer.Substring(4,4);//ノード番号である、文字列の4文字目から4文字取得
-                int rssi = int.Parse(receivedDataBuffer.Substring(9, 2), System.Globalization.NumberStyles.HexNumber);//RSSI値を取得
-                byte[] userData = receivedDataBuffer//ユーザーデータを取得
-                    .Substring(11)
-                    .Split(',')
-                    .Select(hex => Convert.ToByte(hex, 16))
-                    .ToArray();
-                var packet = Packet32Serializer.Decode(userData);//デコード
 
-                switch (packet.Type)
-                {
-                    case DataType.Log:
 
-                        break;
-                    case DataType.DebugLog:
-                        break;
-                    case DataType.DebugNotification:
-                        break;
-                    case DataType.DebugWarning:
-                        break;
-                    case DataType.DebugError:
-                        break;
-                    case DataType.DebugCriticalError:
-                        break;
-                    case DataType.Command:
-                        break;
-                    case DataType.Nothing:
-                        break;
-                    default:
-                        break;
-                }
 
-                //一時的措置
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    mainWindow?.RichTextBox_Log.AppendText(receivedDataBuffer);
-                    mainWindow?.RichTextBox_Log.ScrollToEnd();
-                });
 
-                //バッファをクリア
-                receivedDataBuffer = string.Empty;
-            }
+
+
+
+        /// <summary>
+        /// シリアルポート受信時のイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        private void WModuleDataReceived(string data)//シリアルポート受信時のイベント
+        {
+            Packet32 packet = Packet32Serializer.Deserialize(data);
+        }
+        /// <summary>
+        /// コマンドレスポンスのイベントハンドラ
+        /// </summary>
+        /// <param name="responce"></param>
+        private void CommandResponceEventHandler(string responce)
+        {
         }
         private void PacketReceivedEvent(Packet32 packet)
         {
             switch (packet.Type)
             {
                 case DataType.Log:
-                    Debug.WriteLine($"DebugLog: {packet.Content}");
+                    Debug.WriteLine($"DebugLog: {packet.Data}");
                     break;
                 case DataType.DebugLog:
-                    Debug.WriteLine($"DebugNotification: {packet.Content}");
+                    Debug.WriteLine($"DebugNotification: {packet.Data}");
                     break;
                 case DataType.Nothing:
                     break;

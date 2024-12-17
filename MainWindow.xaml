@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
             <Menu>
                 <ui:MenuItem Header="ファイル" Icon="{ui:SymbolIcon Symbol=List20}">
-                    <MenuItem x:Name="MenuItem_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="MenuItem_NewConnection_Click"/>
+                    <MenuItem x:Name="Button_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="MenuItem_NewConnection_Click"/>
                     <MenuItem x:Name="Button_Disconnect" Header="切断" Icon="{ui:SymbolIcon Symbol=PlugDisconnected20}" IsEnabled="False" Click="Button_Disconnect_Click"/>
                     <MenuItem x:Name="Button_EnvironmentalSetting" Header="環境設定" Icon="{ui:SymbolIcon Symbol=WrenchScrewdriver20}" Click="Button_EnvironmentalSetting_Click"/>
                     <Separator/>

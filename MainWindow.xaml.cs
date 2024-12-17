@@ -12,6 +12,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using MissionController.Core;
+using static MissionController.Core.WirelessModule;
+using System.Diagnostics;
 
 namespace MissionController
 {
@@ -21,56 +23,26 @@ namespace MissionController
     public partial class MainWindow : Window
     {
         //アプリケーションクラスのインスタンス
-        private App app;
+        private App app = (App)App.Current;
         //時計用のタイマー
-        private DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.SystemIdle);
-        //RSSI値
+        private DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.SystemIdle) { Interval = TimeSpan.FromMilliseconds(100) };
+
+        //ボタンのクリックイベント
+        private void MenuItem_NewConnection_Click(object sender, RoutedEventArgs e) { ConnectSerialPort(); }
+        private void Button_Disconnect_Click(object sender, RoutedEventArgs e) { DisconnectSerialPort(); }
         public MainWindow()
         {
             InitializeComponent();
 
-            app = (App)App.Current;
-
+            //ウィンドウのタイトルを設定
             this.Title = Constants.ApplicationName;
-
-            UpdateMainWindow();
-        }
-        private void UpdateMainWindow()
-        {
-            if (isSerialPortOpen())
-            {
-                Button_Disconnect.IsEnabled = true;
-                Button_InputBox_CommandSend.IsEnabled = true;
-            }
-            else
-            {
-                Button_Disconnect.IsEnabled = false;
-                Button_InputBox_CommandSend.IsEnabled = false;
-            }
-
-            UpdateClock();//時計を初期化
-
-            if (isSerialPortOpen())
-            {
-                InputBox_CommandInput.IsEnabled = true;
-
-                UpdateCommandInput();
-            }
-            else
-            {
-                InputBox_CommandInput.IsEnabled = false;
-            }
-            UpdateSignalStrength(0);
-        }
-        private void UpdateClock()
-        {
-            timer.Interval = TimeSpan.FromMilliseconds(100);
-            timer.Tick += (sender, e) =>
-            {
-                TextBlock_CurrentDate.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-            };
+            //時計の更新
+            timer.Tick += (sender, e) => { TextBlock_CurrentDate.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"); };
             timer.Start();
+
+            RefreshWindow();
         }
+        
         private void UpdateCommandInput()
         {
 
@@ -92,10 +64,55 @@ namespace MissionController
             }
             TextBlock_SignalStrength.Text = $"信号強度 {Strength} dBm";
         }
-        private bool isSerialPortOpen()//ポートが開いていたら入力ボックスを有効化する
+
+
+        /// <summary>
+        /// ウィンドウの更新
+        /// </summary>
+        private void RefreshWindow()
         {
-            var app = (App)App.Current;
-            return app.wirelessModule.serialPort.IsOpen;
+            if (app.wirelessModule.serialPort.IsOpen)
+            {
+                Button_NewConnection.IsEnabled = false;
+                Button_Disconnect.IsEnabled = true;
+
+                Button_InputBox_CommandSend.IsEnabled = true;
+            }
+            else
+            {
+                Button_NewConnection.IsEnabled = true;
+                Button_Disconnect.IsEnabled = false;
+
+                Button_InputBox_CommandSend.IsEnabled = false;
+            }
+        }
+        /// <summary>
+        /// シリアルポートに接続する
+        /// </summary>
+        private void ConnectSerialPort()
+        {
+            PortSelectionDialog dialog = new PortSelectionDialog() { Owner = this };
+            bool? result = dialog.ShowDialog();
+            Debug.WriteLine(result);
+
+            if (result == true)
+            {
+                SerialPortSettings serialPortInformation = new SerialPortSettings(
+                    dialog.ComboBox_PortList.SelectedValue?.ToString() ?? string.Empty,
+                    Convert.ToInt32(dialog.ComboBox_Baudlate.SelectedValue));
+                Debug.WriteLine($"取得したポート情報\n{dialog.ComboBox_PortList.SelectedValue?.ToString()}\n{dialog.ComboBox_PortList.SelectedItem}");
+
+                app.wirelessModule.Connect(serialPortInformation);
+            }
+            RefreshWindow();
+        }
+        /// <summary>
+        /// シリアルポートから切断する
+        /// </summary>
+        private void DisconnectSerialPort()
+        {
+            app.wirelessModule.Disconnect();
+            RefreshWindow();
         }
 
 
@@ -109,23 +126,10 @@ namespace MissionController
 
 
 
-
-
-
-
-
-
+        //ボタンのクリックイベント
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-        }
-
-        private void MenuItem_NewConnection_Click(object sender, RoutedEventArgs e)
-        {
-            //serialPortManagement.ConnectにGetSerialPortInformationで取得したシリアルポート情報を渡す
-            var app = (App)App.Current;
-            app.wirelessModule.Connect(WirelessModule.GetSerialPortInformation());
-            UpdateMainWindow();
         }
 
         private void Button_EnvironmentalSetting_Click(object sender, RoutedEventArgs e)
@@ -135,13 +139,7 @@ namespace MissionController
             bool? result = dialog.ShowDialog();
         }
 
-        private void Button_Disconnect_Click(object sender, RoutedEventArgs e)
-        {
-            var app = (App)App.Current;
-            app.wirelessModule.Disconnect();
-
-            UpdateMainWindow();
-        }
+        
 
         private void InputBox_CommandInput_KeyDown(object sender, KeyEventArgs e)
         {
