@@ -28,10 +28,10 @@ namespace MissionController.Core
         }
         
     }
-    public class Packet32Handler
+    public class Packet32Serializer
     {
         public PacketReceivedEventHandler PacketReceived;
-        public Packet32Handler(PacketReceivedEventHandler eventHandler)
+        public Packet32Serializer(PacketReceivedEventHandler eventHandler)
         {
             PacketReceived += eventHandler;
         }
@@ -85,6 +85,9 @@ namespace MissionController.Core
             }
             return packet;
         }
+        //public static byte[] Encode(DataType dataType, string str)
+        //{
+        //}
     }
     public delegate void PacketReceivedEventHandler(Packet32 packet);
     public enum DataType

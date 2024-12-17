@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,11 +15,13 @@ namespace MissionController.Core
     {
         IM920, IM920SL, Xbee//IM920とXbeeは実装未定
     }
-    internal class SerialPortManagement
+    internal class WirelessModule
     {
+        //ロガー
+        private static readonly ILog log = LogManager.GetLogger(typeof(WirelessModule));
         //変数
         internal bool IsSending { get; private set; }
-        internal SerialPort SerialPort { get; private set; }
+        internal SerialPort serialPort { get; private set; }
         internal SerialDataReceivedEventHandler DataReceivedEventHandler;
         internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;//要修正
 
@@ -26,10 +29,10 @@ namespace MissionController.Core
         {
             Command = 0, Broadcast = 1, 
         }
-        internal SerialPortManagement()
+        internal WirelessModule()
         {
             IsSending = false;
-            SerialPort = new SerialPort();
+            serialPort = new SerialPort();
         }
 
         internal static SerialPortInformation GetSerialPortInformation()//シリアルポート情報を取得するメソッド
@@ -54,7 +57,7 @@ namespace MissionController.Core
 
             try
             {
-                SerialPort = new SerialPort()
+                serialPort = new SerialPort()
                 {
                     PortName = serialPortInformation.PortName,
                     BaudRate = serialPortInformation.BaudLate,
@@ -63,10 +66,10 @@ namespace MissionController.Core
                     StopBits = serialPortInformation.StopBits,
                     Handshake = serialPortInformation.Handshake,
                 };
-                SerialPort.DataReceived += DataReceivedEventHandler;
+                serialPort.DataReceived += DataReceivedEventHandler;
 
 
-                SerialPort.Open();//ポートを開く
+                serialPort.Open();//ポートを開く
 
                 MessageBox.Show($"{serialPortInformation.PortName}に接続しました", string.Empty, MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -79,11 +82,11 @@ namespace MissionController.Core
         }
         public void Disconnect()
         {
-            if (SerialPort.IsOpen)
+            if (serialPort.IsOpen)
             {
                 try
                 {
-                    SerialPort.Close();
+                    serialPort.Close();
                 }
                 catch (Exception e)
                 {
@@ -91,30 +94,82 @@ namespace MissionController.Core
                 }
             }
         }
-        public void Send(SendType type, string data)//データを送信するメソッド
+        public async Task<bool> Send(SendType type, byte[] data)//データを送信するメソッド
         {
-            string command = string.Empty;
-            switch (type)
+            if (!serialPort.IsOpen || IsSending) return false;
+
+            return await Task.Run(() =>
             {
-                case SendType.Command:
-                    command = data;
-                    break;
-                case SendType.Broadcast:
-                    command = "TXDA " + data;
-                    break;
-            }
-            if (SerialPort.IsOpen && IsSending == false)
-            {
-                IsSending = true;
-                try
+                switch (type)
                 {
-                    SerialPort.Write(command);
+                    case SendType.Command:
+                        try
+                        {
+                            //無線モジュール用のコマンド
+                            IsSending = true;
+                            serialPort.WriteLine(BitConverter.ToString(data));
+                            IsSending = false;
+
+                            //OKorNGを受信するまで待機
+                            if (serialPort.ReadLine().Contains("OK"))
+                            {
+                                log.Info("送信成功");
+                            }
+                            else if (serialPort.ReadLine().Contains("NG"))
+                            {
+                                log.Info("送信失敗");
+                            }
+                            else
+                            {
+                                log.Info(serialPort.ReadLine());
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
+                        break;
+                    case SendType.Broadcast:
+                        //IM920SLのブロードキャスト送信形式"TXDA[data]"にする
+                        //WriteLineを使って<CR><LF>付きで送信する
+                        try
+                        {
+                            //送信中フラグを立てる
+                            IsSending = true;
+                            serialPort.WriteLine("TXDA" + BitConverter.ToString(data).Replace("-", ","));
+
+                            //OKorNGを受信するまで待機
+                            if(serialPort.ReadLine().Contains("OK"))
+                            {
+                                log.Info("送信成功");
+                            }
+                            else if(serialPort.ReadLine().Contains("OK"))
+                            {
+                                log.Info("送信失敗");
+                            }
+                            //送信中フラグを下げる
+                            IsSending = false;
+                        }
+                        catch (TimeoutException e)
+                        {
+                            log.Debug($"Timeout: {e}");
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
+                        finally
+                        {
+                            IsSending = false;
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Failed to send data {e.Message}");
-                }
-            }
+                return true;
+            });
         }
 
     }

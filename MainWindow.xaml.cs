@@ -20,10 +20,11 @@ namespace MissionController
     /// </summary>
     public partial class MainWindow : Window
     {
+        //アプリケーションクラスのインスタンス
         private App app;
-
-
+        //時計用のタイマー
         private DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.SystemIdle);
+        //RSSI値
         public MainWindow()
         {
             InitializeComponent();
@@ -74,7 +75,7 @@ namespace MissionController
         {
 
         }
-        private void UpdateSignalStrength(int Strength)
+        internal void UpdateSignalStrength(int Strength)
         {
             //後で処理追加
             if(Strength >= Convert.ToByte(255))
@@ -94,7 +95,7 @@ namespace MissionController
         private bool isSerialPortOpen()//ポートが開いていたら入力ボックスを有効化する
         {
             var app = (App)App.Current;
-            return app.serialPortManagement.SerialPort.IsOpen;
+            return app.wirelessModule.serialPort.IsOpen;
         }
 
 
@@ -123,7 +124,7 @@ namespace MissionController
         {
             //serialPortManagement.ConnectにGetSerialPortInformationで取得したシリアルポート情報を渡す
             var app = (App)App.Current;
-            app.serialPortManagement.Connect(SerialPortManagement.GetSerialPortInformation());
+            app.wirelessModule.Connect(WirelessModule.GetSerialPortInformation());
             UpdateMainWindow();
         }
 
@@ -137,7 +138,7 @@ namespace MissionController
         private void Button_Disconnect_Click(object sender, RoutedEventArgs e)
         {
             var app = (App)App.Current;
-            app.serialPortManagement.Disconnect();
+            app.wirelessModule.Disconnect();
 
             UpdateMainWindow();
         }

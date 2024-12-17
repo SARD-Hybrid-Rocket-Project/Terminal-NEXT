@@ -21,31 +21,48 @@ namespace MissionController
         //ロガー
         private static readonly ILog log = LogManager.GetLogger(typeof(App));
         //メインウィンドウ
-        internal MainWindow mainWindow;
+        internal MainWindow? mainWindow;
         //無線接続関連
-        internal SerialPortManagement serialPortManagement { get; private set; }
+        internal WirelessModule wirelessModule { get; private set; }
+        public ushort NodeNumber { get; private set; }
+        private int _rssi;
+        public int RSSI
+        {
+            get { return _rssi; }
+            set
+            {
+                _rssi = value;
+                mainWindow?.UpdateSignalStrength(value);
+            }
+        }
         private string receivedDataBuffer = string.Empty;
 
         //環境変数・プロファイルのクラス
         public ApplicationProfile Profile { get; private set; }
         public EnvironmentConfiguration Config { get; private set; }
-        public Packet32Handler PacketHandler { get; private set; }
+        public Packet32Serializer PacketHandler { get; private set; }
 
         public App()
         {
-            log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));//log4netの初期化
-            log.Info("ロガーの初期化完了");
+            //log4netの初期化
+            log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
+            log.Info("Initialized log4net");
 
-            //設定ファイル読み込み
+            //環境設定ファイル読み込み
             Config = EnvironmentConfiguration.ReadConfiguration();
+            log.Info("Read configuration file");
 
             //アプリのインスタンス情報を新規作成
             Profile = new ApplicationProfile();
+            log.Debug("Created application profile");
 
-            //シリアル通信用のシリアルポートインスタンスを宣言
-            serialPortManagement = new SerialPortManagement();
-            serialPortManagement.DataReceivedEventHandler += SerialDataReceived;//シリアルポート受信時のイベント
-            PacketHandler = new Packet32Handler(PacketReceivedEvent);
+            //ワイヤレスモジュールの制御クラスをインスタンス化
+            wirelessModule = new WirelessModule();
+            wirelessModule.DataReceivedEventHandler += SerialDataReceived;//シリアルポート受信時のイベント
+            log.Debug("WirelessModuleクラスのインスタンスwirelessModuleを初期化");
+
+            //謎
+            PacketHandler = new Packet32Serializer(PacketReceivedEvent);
 
 
             //コンストラクタの最後でMainWindowを初期化する。表示はしない。
@@ -55,14 +72,14 @@ namespace MissionController
         {
             base.OnStartup(e);
 
-            mainWindow.Show();
+            mainWindow?.Show();
         }
         private void SerialDataReceived(Object sender,SerialDataReceivedEventArgs e)//シリアルポート受信時のイベント
         {
             try
             {
                 //受け取ったデータをバッファ用変数に追加する。
-                receivedDataBuffer += serialPortManagement.SerialPort.ReadExisting();
+                receivedDataBuffer += wirelessModule.serialPort.ReadExisting();
             }
             catch (Exception ex)
             {
@@ -87,14 +104,36 @@ namespace MissionController
                     .Split(',')
                     .Select(hex => Convert.ToByte(hex, 16))
                     .ToArray();
-                var packet = Packet32Handler.Decode(userData);//デコード
-                Debug.WriteLine($"Received: {receivedDataBuffer}");
+                var packet = Packet32Serializer.Decode(userData);//デコード
+
+                switch (packet.Type)
+                {
+                    case DataType.Log:
+
+                        break;
+                    case DataType.DebugLog:
+                        break;
+                    case DataType.DebugNotification:
+                        break;
+                    case DataType.DebugWarning:
+                        break;
+                    case DataType.DebugError:
+                        break;
+                    case DataType.DebugCriticalError:
+                        break;
+                    case DataType.Command:
+                        break;
+                    case DataType.Nothing:
+                        break;
+                    default:
+                        break;
+                }
 
                 //一時的措置
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    mainWindow.RichTextBox_Log.AppendText(receivedDataBuffer);
-                    mainWindow.RichTextBox_Log.ScrollToEnd();
+                    mainWindow?.RichTextBox_Log.AppendText(receivedDataBuffer);
+                    mainWindow?.RichTextBox_Log.ScrollToEnd();
                 });
 
                 //バッファをクリア
