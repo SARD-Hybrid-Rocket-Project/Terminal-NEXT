@@ -63,20 +63,21 @@ namespace MissionController.Core
         {
             //データの分解
             //ノード番号である、文字列の4文字目から4文字取得
-            ushort node = Convert.ToUInt16(data.Substring(4, 4), 16);
+            ushort node = Convert.ToUInt16(data.Substring(3, 4), 16);
             //RSSI値を取得
-            byte rssi = Convert.ToByte(data.Substring(9, 2), 16);
+            byte rssi = Convert.ToByte(data.Substring(8, 2), 16);
             //ユーザーデータを取得
             byte[] userData = data
                 .Substring(11)
                 .Split(',')
+                .Select(hex => hex.Trim())
                 .Select(hex => Convert.ToByte(hex, 16))
                 .ToArray();
 
             //デフォルトはDataType.Nothing
-            DataType type = DataType.Nothing;
+            DataType type = DataType.NOTHING;
             //data[0]がDataTypeに含まれているか確認し、含まれていればtypeにキャストする
-            if (Enum.IsDefined(typeof(DataType), userData[0])) type = (DataType)userData[0];
+            if (Enum.IsDefined(typeof(DataType), (int)userData[0])) type = (DataType)(int)userData[0];
             //Packet32を生成して返す
             return new Packet32(node, rssi, type, userData.Skip(1).ToArray());
         }
@@ -84,8 +85,8 @@ namespace MissionController.Core
     public delegate void PacketReceivedEventHandler(Packet32 packet);
     public enum DataType
     {
-        Log = 0x00, DebugLog = 0x01, DebugNotification = 0x02, DebugWarning = 0x03, DebugError = 0x04, DebugCriticalError = 0x05,
-        Command = 0x10,
-        Nothing = 0xFF
+        DEBUG = 0x00, INFO = 0x01, WARN = 0x02, ERROR = 0x03, FATAL = 0x04,
+        COMMAND = 0x10,
+        NOTHING = 0xFF
     }
 }

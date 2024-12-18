@@ -25,7 +25,7 @@ namespace MissionController
         //アプリケーションクラスのインスタンス
         private App app = (App)App.Current;
         //時計用のタイマー
-        private DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.SystemIdle) { Interval = TimeSpan.FromMilliseconds(100) };
+        private Timer timer;
 
         //ボタンのクリックイベント
         private void MenuItem_NewConnection_Click(object sender, RoutedEventArgs e) { ConnectSerialPort(); }
@@ -37,12 +37,23 @@ namespace MissionController
             //ウィンドウのタイトルを設定
             this.Title = Constants.ApplicationName;
             //時計の更新
-            timer.Tick += (sender, e) => { TextBlock_CurrentDate.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"); };
-            timer.Start();
+            timer = new Timer((state) =>
+            {
+                string currentTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+                Application.Current.Dispatcher.Invoke(() => { TextBlock_CurrentDate.Text = currentTime; });
+            },
+            null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
 
             RefreshWindow();
         }
-        
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            //タイマーの破棄
+            timer.Dispose();
+        }
+
         private void UpdateCommandInput()
         {
 
@@ -114,6 +125,11 @@ namespace MissionController
             app.wirelessModule.Disconnect();
             RefreshWindow();
         }
+        /// <summary>
+        /// ログ表示
+        /// </summary>
+        /// <param name="paragraph"></param>
+        
 
 
 
@@ -151,6 +167,12 @@ namespace MissionController
         }
         private void SerialCommandSend(string s)
         {
+        }
+
+        private void Button_SystemLog_Click(object sender, RoutedEventArgs e)
+        {
+            SystemLogWindow systemLogWindow = new SystemLogWindow();
+            systemLogWindow.Show();
         }
     }
 }

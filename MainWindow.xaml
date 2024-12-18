@@ -30,35 +30,35 @@
                     <MenuItem x:Name="Button_Setting" Header="設定" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
                 </ui:MenuItem>
                 <ui:MenuItem Header="表示" Icon="{ui:SymbolIcon Symbol=Desktop20}">
-                    <MenuItem x:Name="Button_VisualLog"  Header="ログ" Icon="{ui:SymbolIcon Symbol=LineHorizontal320}"/>
+                    <MenuItem x:Name="Button_SystemLog"  Header="ログ" Icon="{ui:SymbolIcon Symbol=LineHorizontal320}" Click="Button_SystemLog_Click"/>
                 </ui:MenuItem>
             </Menu>
-            <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="10,5,10,5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+            <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="10,5,10,5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20"/>
         </Grid>
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="0.5*" />
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <RichTextBox x:Name="RichTextBox_Log" Background="Black" Foreground="White" IsReadOnly="True" Focusable="True" FontSize="16" Grid.ColumnSpan="2" SelectionTextBrush="Black" Cursor="IBeam" />
-            <Grid Grid.Row="1" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
-                <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="Button_InputBox_CommandSend_Click"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <RichTextBox x:Name="RichTextBox_LogDisplay" Background="Black" Foreground="White" IsReadOnly="True" Focusable="True" FontSize="16" Grid.ColumnSpan="2" SelectionTextBrush="Black" Cursor="IBeam" Grid.Column="1">
+                    <RichTextBox.Document>
+                        <FlowDocument LineHeight="12" LineStackingStrategy="BlockLineHeight"/>
+                    </RichTextBox.Document>
+                </RichTextBox>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
+                    <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="Button_InputBox_CommandSend_Click"/>
+                </Grid>
             </Grid>
-            <RichTextBox x:Name="TextBox_DebugLog" SelectionTextBrush="Black" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Focusable="True" Background="Black" Foreground="White" FontSize="12">
-                <RichTextBox.Document>
-                    <FlowDocument LineHeight="12" LineStackingStrategy="BlockLineHeight"/>
-                </RichTextBox.Document>
-            </RichTextBox>
         </Grid>
         <Grid VerticalAlignment="Bottom" Background="#FFB941D7" Grid.Row="2">
             <Grid.ColumnDefinitions>

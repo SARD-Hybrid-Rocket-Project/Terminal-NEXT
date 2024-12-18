@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Net.Sockets;
 using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Documents;
@@ -20,7 +21,10 @@ namespace MissionController
     {
         //ロガー
         private static readonly ILog log = LogManager.GetLogger(typeof(App));
-        //メインウィンドウ
+        internal FlowDocumentManager SystemLogDocument { get; private set; } = new FlowDocumentManager();
+
+        internal FlowDocumentManager SystemLogView { get; private set; }
+        //UI関連
         internal MainWindow? mainWindow;
         //無線接続関連
         internal WirelessModule wirelessModule { get; private set; }
@@ -89,10 +93,13 @@ namespace MissionController
         /// <summary>
         /// シリアルポート受信時のイベント
         /// </summary>
-        /// <param name="sender"></param>
         private void WModuleDataReceived(string data)//シリアルポート受信時のイベント
         {
             Packet32 packet = Packet32Serializer.Deserialize(data);
+            log.Debug($"Received: {packet.RSSI}");
+            Debug.WriteLine($"{packet.Timestamp}\nノード番号は{packet.NodeNumber}\n信号強度は{packet.RSSI}\nカテゴリは{packet.Type}\n内容は{packet.Data}");
+            
+
         }
         /// <summary>
         /// コマンドレスポンスのイベントハンドラ
@@ -100,18 +107,19 @@ namespace MissionController
         /// <param name="responce"></param>
         private void CommandResponceEventHandler(string responce)
         {
+            Debug.WriteLine($"Received:at Command");
         }
         private void PacketReceivedEvent(Packet32 packet)
         {
             switch (packet.Type)
             {
-                case DataType.Log:
+                case DataType.DEBUG:
                     Debug.WriteLine($"DebugLog: {packet.Data}");
                     break;
-                case DataType.DebugLog:
+                case DataType.INFO:
                     Debug.WriteLine($"DebugNotification: {packet.Data}");
                     break;
-                case DataType.Nothing:
+                case DataType.NOTHING:
                     break;
             }
             //受信したパケットの処理

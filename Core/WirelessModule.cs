@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -170,29 +171,22 @@ namespace MissionController.Core
         private void DataReceivedEventHandler(object sender, SerialDataReceivedEventArgs e)
         {
             //受信データを読み取る
-            var readData = serialPort.ReadExisting().Split("\r\n");
+            var r = serialPort.ReadExisting();
             //受信データを改行で分割してバッファに格納
 
             //IM920SLの場合、受信データはaa,bbbb,dd:userDataもしくは、コマンドレスポンスのOK,NG、設定読み取りコマンド時の値が返ってくる。
             //そこで、受信データがaa,bbbb,dd:で始まる場合はデータ受信イベントを発火したい
             //処理負荷を軽減するため、aa,bbbb,dd:のカンマとコロンの位置で判定する。
-            foreach (var r in readData)
+            if (r.StartsWith("00,"))
             {
-                if (r[2] == ',' && r[7] == ',' && r[10] == ':')
-                {
-                    //アビオニクスからのデータ受信イベントを発火
-                    DataReceivedEvent?.Invoke(r);
-                }
-                else
-                {
-                    //コマンドレスポンスの場合
-                    CommandResponceEvent?.Invoke(r);
-                }
+                //アビオニクスからのデータ受信イベントを発火
+                if (DataReceivedEvent != null) DataReceivedEvent(r);
             }
-
-
-            //データ受信イベントを発火
-            DataReceivedEvent?.Invoke(sender);
+            else
+            {
+                //コマンドレスポンスの場合
+                CommandResponceEvent?.Invoke(r);
+            }
         }
 
         internal static SerialPortSettings GetSerialPortInformation()//シリアルポート情報を取得するメソッド
