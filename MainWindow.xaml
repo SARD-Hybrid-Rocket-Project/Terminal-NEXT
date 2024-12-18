@@ -29,6 +29,9 @@
                 <ui:MenuItem Header="編集" Icon="{ui:SymbolIcon Symbol=Edit20}">
                     <MenuItem x:Name="Button_Setting" Header="設定" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
                 </ui:MenuItem>
+                <ui:MenuItem Header="ツール" Icon="{ui:SymbolIcon Symbol=Toolbox20}">
+                    <MenuItem x:Name="Button_ConnectDB" Header="データベースに接続" Icon="{ui:SymbolIcon Symbol=DatabasePlugConnected20}"/>
+                </ui:MenuItem>
                 <ui:MenuItem Header="表示" Icon="{ui:SymbolIcon Symbol=Desktop20}">
                     <MenuItem x:Name="Button_SystemLog"  Header="ログ" Icon="{ui:SymbolIcon Symbol=LineHorizontal320}" Click="Button_SystemLog_Click"/>
                 </ui:MenuItem>

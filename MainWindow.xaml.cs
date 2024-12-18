@@ -171,6 +171,11 @@ namespace MissionController
 
         private void Button_SystemLog_Click(object sender, RoutedEventArgs e)
         {
+            if (app.SystemLogDocument.FlowDocument.Parent is RichTextBox)
+            {
+                GetWindow(app.SystemLogDocument.FlowDocument.Parent as RichTextBox)?.Activate();
+                return;
+            }
             SystemLogWindow systemLogWindow = new SystemLogWindow();
             systemLogWindow.Show();
         }
