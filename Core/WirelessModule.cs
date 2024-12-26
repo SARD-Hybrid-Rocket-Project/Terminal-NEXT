@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace MissionController.Core
 {
-    public delegate void WMDataReceivedEventHandler(string data);
+    public delegate void WMDataReceivedEventHandler(Packet32 packet32);
     public delegate void WMCommandResponceEventHandler(string data);
     public enum WirelessModuleType
     {
@@ -24,6 +24,7 @@ namespace MissionController.Core
         private static readonly ILog log = LogManager.GetLogger(typeof(WirelessModule));
         //変数
         internal bool IsSending { get; private set; }
+        internal byte RSSI { get; private set; }
         internal SerialPort serialPort { get; private set; }
 
         //イベント
@@ -31,7 +32,7 @@ namespace MissionController.Core
         internal WMCommandResponceEventHandler? CommandResponceEvent;
         internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;//要修正
         //バッファ
-        internal string[] ReceivedDataBuffer { get; private set; }
+        internal string[] ReceivedDataBuffer { get; private set; } = new string[0];
 
         internal enum SendType
         {
@@ -179,8 +180,10 @@ namespace MissionController.Core
             //処理負荷を軽減するため、aa,bbbb,dd:のカンマとコロンの位置で判定する。
             if (r.StartsWith("00,"))
             {
+                Packet32 packet = Packet32Serializer.Deserialize(r);
+                RSSI = packet.RSSI;
                 //アビオニクスからのデータ受信イベントを発火
-                if (DataReceivedEvent != null) DataReceivedEvent(r);
+                DataReceivedEvent?.Invoke(packet);
             }
             else
             {

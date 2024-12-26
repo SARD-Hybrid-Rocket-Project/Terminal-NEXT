@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using log4net;
 using MissionController.Core;
+using MissionController.Core.Logging;
 using MissionController.Views;
 
 namespace MissionController
@@ -22,28 +23,14 @@ namespace MissionController
         //ロガー
         private static readonly ILog log = LogManager.GetLogger(typeof(App));
         internal FlowDocumentManager SystemLogDocument { get; private set; } = new FlowDocumentManager();
-
-        internal FlowDocumentManager SystemLogView { get; private set; }
         //UI関連
         internal MainWindow? mainWindow;
         //無線接続関連
         internal WirelessModule wirelessModule { get; private set; }
-        public ushort NodeNumber { get; private set; }
-        private int _rssi;
-        public int RSSI
-        {
-            get { return _rssi; }
-            set
-            {
-                _rssi = value;
-                mainWindow?.UpdateSignalStrength(value);
-            }
-        }
 
         //環境変数・プロファイルのクラス
         public ApplicationProfile Profile { get; private set; }
         public EnvironmentConfiguration Config { get; private set; }
-        public Packet32Serializer PacketHandler { get; private set; }
 
         public App()
         {
@@ -62,7 +49,7 @@ namespace MissionController
             //ワイヤレスモジュールの制御クラスをインスタンス化し、イベントを設定
             wirelessModule = new WirelessModule()
             {
-                DataReceivedEvent = WModuleDataReceived,
+                DataReceivedEvent = WirelessModuleDataReceived,
                 CommandResponceEvent = CommandResponceEventHandler
             };
             log.Debug("WirelessModuleクラスのインスタンスwirelessModuleを初期化");
@@ -77,6 +64,19 @@ namespace MissionController
             mainWindow?.Show();
         }
 
+        //イベントハンドラ
+        /// <summary>
+        /// シリアルポート受信時のイベント
+        /// </summary>
+        private void WirelessModuleDataReceived(Packet32 packet)
+        {
+            Debug.WriteLine($"{packet.Timestamp}\nノード番号は{packet.NodeNumber}\n信号強度は{packet.RSSI}\nカテゴリは{packet.Type}\n内容は{packet.Data}");
+        }
+        private void CommandResponceEventHandler(string responce)
+        {
+            Debug.WriteLine($"Received:at Command");
+        }
+
         //メソッドとか
         public void Send(Packet32 packet)
         {
@@ -87,43 +87,13 @@ namespace MissionController
 
 
 
-
-
-
-        /// <summary>
-        /// シリアルポート受信時のイベント
-        /// </summary>
-        private void WModuleDataReceived(string data)//シリアルポート受信時のイベント
-        {
-            Packet32 packet = Packet32Serializer.Deserialize(data);
-            log.Debug($"Received: {packet.RSSI}");
-            Debug.WriteLine($"{packet.Timestamp}\nノード番号は{packet.NodeNumber}\n信号強度は{packet.RSSI}\nカテゴリは{packet.Type}\n内容は{packet.Data}");
-            
-
-        }
+        
         /// <summary>
         /// コマンドレスポンスのイベントハンドラ
         /// </summary>
         /// <param name="responce"></param>
-        private void CommandResponceEventHandler(string responce)
-        {
-            Debug.WriteLine($"Received:at Command");
-        }
-        private void PacketReceivedEvent(Packet32 packet)
-        {
-            switch (packet.Type)
-            {
-                case DataType.DEBUG:
-                    Debug.WriteLine($"DebugLog: {packet.Data}");
-                    break;
-                case DataType.INFO:
-                    Debug.WriteLine($"DebugNotification: {packet.Data}");
-                    break;
-                case DataType.NOTHING:
-                    break;
-            }
-            //受信したパケットの処理
-        }
+        
+        
         //internal void LogAddEvent(LogData data)
         //{
         //    //ログ追加時の処理

@@ -37,13 +37,8 @@ namespace MissionController.Core
         }
         
     }
-    public class Packet32Serializer
+    public static class Packet32Serializer
     {
-        public PacketReceivedEventHandler PacketReceived;
-        public Packet32Serializer(PacketReceivedEventHandler eventHandler)
-        {
-            PacketReceived += eventHandler;
-        }
         /// <summary>
         /// Packet32形式をシリアライズします。
         /// </summary>
@@ -66,27 +61,25 @@ namespace MissionController.Core
             ushort node = Convert.ToUInt16(data.Substring(3, 4), 16);
             //RSSI値を取得
             byte rssi = Convert.ToByte(data.Substring(8, 2), 16);
+            //DataTypeを取得
+            byte type = Convert.ToByte(data.Substring(11, 2), 16);
+            if (!Enum.IsDefined(typeof(DataType), (int)type)) type = 255;//DataTypeが定義されていない場合は255に設定
+
             //ユーザーデータを取得
             byte[] userData = data
-                .Substring(11)
+                .Substring(13)
                 .Split(',')
                 .Select(hex => hex.Trim())
                 .Select(hex => Convert.ToByte(hex, 16))
                 .ToArray();
-
-            //デフォルトはDataType.Nothing
-            DataType type = DataType.NOTHING;
-            //data[0]がDataTypeに含まれているか確認し、含まれていればtypeにキャストする
-            if (Enum.IsDefined(typeof(DataType), (int)userData[0])) type = (DataType)(int)userData[0];
             //Packet32を生成して返す
-            return new Packet32(node, rssi, type, userData.Skip(1).ToArray());
+            return new Packet32(node, rssi, (DataType)type, userData);
         }
     }
-    public delegate void PacketReceivedEventHandler(Packet32 packet);
     public enum DataType
     {
-        DEBUG = 0x00, INFO = 0x01, WARN = 0x02, ERROR = 0x03, FATAL = 0x04,
-        COMMAND = 0x10,
-        NOTHING = 0xFF
+        DEBUG = 0, INFO = 1, WARN = 2, ERROR = 3, FATAL = 4,
+        COMMAND = 16,
+        NOTHING = 255
     }
 }

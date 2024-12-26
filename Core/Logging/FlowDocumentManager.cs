@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace MissionController.Core
+namespace MissionController.Core.Logging
 {
     internal class FlowDocumentManager
     {
@@ -40,6 +40,8 @@ namespace MissionController.Core
                     break;
                 case DataType.FATAL:
                     logAttribute.Background = Brushes.IndianRed;
+                    break;
+                default:
                     break;
             }
             Run time = new Run(packet.Timestamp.ToString(" HH:mm:ss:fff "));//時間

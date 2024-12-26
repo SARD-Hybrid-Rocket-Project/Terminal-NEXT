@@ -58,14 +58,15 @@ namespace MissionController
         {
 
         }
-        internal void UpdateSignalStrength(int Strength)
+        internal void UpdateSignalStrength()
         {
+            byte rssi = app.wirelessModule.RSSI;
             //後で処理追加
-            if(Strength >= Convert.ToByte(255))
+            if (rssi >= Convert.ToByte(255))
             {
                 Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularData120;
             }
-            else if(Strength >= Convert.ToByte(100))
+            else if(rssi >= Convert.ToByte(100))
             {
                 Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularData220;
             }
@@ -73,7 +74,7 @@ namespace MissionController
             {
                 Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularOff24;
             }
-            TextBlock_SignalStrength.Text = $"信号強度 {Strength} dBm";
+            TextBlock_SignalStrength.Text = $"信号強度 {rssi} dBm";
         }
 
 
