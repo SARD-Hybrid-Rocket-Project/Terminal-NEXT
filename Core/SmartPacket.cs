@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MissionController.Core
 {
-    public class Packet32
+    public class SmartPacket
     {
         //変数
         public ushort NodeNumber { get; set; } = 0xFFFF;
@@ -18,12 +18,12 @@ namespace MissionController.Core
         public DateTime Timestamp { get; set; } = DateTime.Now;
 
         //Packet32のコンストラクタ
-        public Packet32(DataType dataType, byte[] content)
+        public SmartPacket(DataType dataType, byte[] content)
         {
             Type = dataType;
             Data = content;
         }
-        public Packet32(ushort nodeNumber, byte rssi, DataType dataType, byte[] data)
+        public SmartPacket(ushort nodeNumber, byte rssi, DataType dataType, byte[] data)
         {
             NodeNumber = nodeNumber;
             RSSI = rssi;
@@ -44,7 +44,7 @@ namespace MissionController.Core
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        public static string Serialize(Packet32 packet)
+        public static string Serialize(SmartPacket packet)
         {
             //packet.Typeを16進数に変換して、Contentをカンマ区切りの文字列に変換して返す
             return ((byte)packet.Type).ToString("X2") + BitConverter.ToString((byte[])packet.Data).Replace("-", ",");
@@ -54,7 +54,7 @@ namespace MissionController.Core
         /// </summary>
         /// <param name="data">byte形式の配列</param>
         /// <returns></returns>
-        public static Packet32 Deserialize(string data)
+        public static SmartPacket Deserialize(string data)
         {
             //データの分解
             //ノード番号である、文字列の4文字目から4文字取得
@@ -73,7 +73,7 @@ namespace MissionController.Core
                 .Select(hex => Convert.ToByte(hex, 16))
                 .ToArray();
             //Packet32を生成して返す
-            return new Packet32(node, rssi, (DataType)type, userData);
+            return new SmartPacket(node, rssi, (DataType)type, userData);
         }
     }
     public enum DataType

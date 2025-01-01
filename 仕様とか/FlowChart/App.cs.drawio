@@ -1,52 +1,52 @@
 <mxfile host="65bd71144e">
     <diagram id="lW6d2szeBfjSh7wegpzJ" name="ページ1">
-        <mxGraphModel dx="611" dy="520" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1600" math="0" shadow="0">
+        <mxGraphModel dx="646" dy="445" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1600" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="20" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="15" target="19">
+                <mxCell id="20" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="15" target="19" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="コンストラクタ" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+                <mxCell id="15" value="コンストラクタ" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" parent="1" vertex="1">
                     <mxGeometry x="400" y="60" width="100" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="19" target="21">
+                <mxCell id="22" value="" style="edgeStyle=none;html=1;" parent="1" source="19" target="21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="19" value="ロガー初期化" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="19" value="ロガー初期化" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="160" width="220" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="24" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="21" target="23">
+                <mxCell id="24" value="" style="edgeStyle=none;html=1;" parent="1" source="21" target="23" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="21" value="環境ファイル（&lt;strong&gt;&lt;code style=&quot;font-family: var(--monaco-monospace-font);&quot;&gt;EnvironmentConfiguration&lt;/code&gt;&lt;/strong&gt;）&lt;br&gt;読み出し" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="21" value="環境ファイル（&lt;strong&gt;&lt;code style=&quot;font-family: var(--monaco-monospace-font);&quot;&gt;EnvironmentConfiguration&lt;/code&gt;&lt;/strong&gt;）&lt;br&gt;読み出し" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="320" width="220" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="28" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="23" target="27">
+                <mxCell id="28" value="" style="edgeStyle=none;html=1;" parent="1" source="23" target="27" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" value="インスタンスプロファイルを作成" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="23" value="インスタンスプロファイルを作成" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="480" width="220" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="30" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="27" target="29">
+                <mxCell id="30" value="" style="edgeStyle=none;html=1;" parent="1" source="27" target="29" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="27" value="WirelessModuleクラスインスタンスの初期化" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="27" value="WirelessModuleクラスインスタンスの初期化" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="640" width="220" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="32" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="29" target="31">
+                <mxCell id="32" value="" style="edgeStyle=none;html=1;" parent="1" source="29" target="31" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="29" value="wirelessModuleにシリアル通信受信時のイベントを登録" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="29" value="wirelessModuleにシリアル通信受信時のイベントを登録" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="800" width="220" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="34" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="31" target="33">
+                <mxCell id="34" value="" style="edgeStyle=none;html=1;" parent="1" source="31" target="33" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="31" value="Packet32のDecodeハンドラを登録" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="31" value="Packet32のDecodeハンドラを登録" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="960" width="220" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="33" value="MainWindowを初期化" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+                <mxCell id="33" value="MainWindowを初期化" style="whiteSpace=wrap;html=1;rounded=0;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
                     <mxGeometry x="340" y="1120" width="220" height="80" as="geometry"/>
                 </mxCell>
             </root>

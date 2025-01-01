@@ -1,5 +1,6 @@
 ﻿using log4net;
 using log4net.Appender;
+using log4net.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +11,17 @@ using System.Windows.Media;
 
 namespace MissionController
 {
-    internal class CustomLogManager : AppenderSkeleton
+    internal class TimelineAppender : AppenderSkeleton
     {
-        private Paragraph[] paragraphs = new Paragraph[0];
-        protected override void Append(log4net.Core.LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
-            if (loggingEvent == null) return;
+            // ログメッセージをフォーマット
+            string logMessage = this.RenderLoggingEvent(loggingEvent);
 
-            Paragraph p = new Paragraph();
-            p.FontFamily = new FontFamily("Consolas");
-
-            Run logAttribute = new Run(" " + (loggingEvent.Level?.ToString() ?? "Unknown") + " ");
-            Run time = new Run(loggingEvent.TimeStamp.ToString(" HH:mm:ss:fff "));//時間
-            switch (loggingEvent.Level?.Name)
-            {
-                case "LOG":
-                    logAttribute.Background = Brushes.White;
-                    break;
-                case "DEBUG":
-                    logAttribute.Background = Brushes.Green;
-                    break;
-            }
-            p.Inlines.Add(logAttribute);
-            p.Inlines.Add(time);
-            p.Inlines.Add(new Run(loggingEvent.RenderedMessage));
-            string logMessage = RenderLoggingEvent(loggingEvent);
+            // 独自の出力処理（例: コンソールに色付きで出力）
+            Console.ForegroundColor = ConsoleColor.Cyan; // メッセージの色を変更
+            Console.WriteLine($"[CustomAppender] {logMessage}");
+            Console.ResetColor(); // 色をリセット
         }
     }
 }

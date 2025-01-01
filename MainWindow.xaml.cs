@@ -12,7 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using MissionController.Core;
-using static MissionController.Core.WirelessModule;
+using static MissionController.Core.WirelessModuleManager;
 using System.Diagnostics;
 
 namespace MissionController
@@ -34,8 +34,11 @@ namespace MissionController
         {
             InitializeComponent();
 
+
+            RichTextBox_Timeline.Document = app.timeline.TimelineDocument;
+
             //ウィンドウのタイトルを設定
-            this.Title = Constants.ApplicationName;
+            this.Title = MissionController.Resources.Resource.ApplicationName;
             //時計の更新
             timer = new Timer((state) =>
             {
@@ -48,10 +51,11 @@ namespace MissionController
         }
         protected override void OnClosed(EventArgs e)
         {
-            base.OnClosed(e);
-
             //タイマーの破棄
             timer.Dispose();
+            //参照を切る
+            RichTextBox_Timeline.Document = new FlowDocument();
+            base.OnClosed(e);
         }
 
         private void UpdateCommandInput()
@@ -103,19 +107,8 @@ namespace MissionController
         /// </summary>
         private void ConnectSerialPort()
         {
-            PortSelectionDialog dialog = new PortSelectionDialog() { Owner = this };
-            bool? result = dialog.ShowDialog();
-            Debug.WriteLine(result);
+            app.Connect();
 
-            if (result == true)
-            {
-                SerialPortSettings serialPortInformation = new SerialPortSettings(
-                    dialog.ComboBox_PortList.SelectedValue?.ToString() ?? string.Empty,
-                    Convert.ToInt32(dialog.ComboBox_Baudlate.SelectedValue));
-                Debug.WriteLine($"取得したポート情報\n{dialog.ComboBox_PortList.SelectedValue?.ToString()}\n{dialog.ComboBox_PortList.SelectedItem}");
-
-                app.wirelessModule.Connect(serialPortInformation);
-            }
             RefreshWindow();
         }
         /// <summary>
@@ -147,6 +140,7 @@ namespace MissionController
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            RichTextBox_Timeline.Document = app.timeline.TimelineDocument;
         }
 
         private void Button_EnvironmentalSetting_Click(object sender, RoutedEventArgs e)
@@ -168,17 +162,6 @@ namespace MissionController
         }
         private void SerialCommandSend(string s)
         {
-        }
-
-        private void Button_SystemLog_Click(object sender, RoutedEventArgs e)
-        {
-            if (app.SystemLogDocument.FlowDocument.Parent is RichTextBox)
-            {
-                GetWindow(app.SystemLogDocument.FlowDocument.Parent as RichTextBox)?.Activate();
-                return;
-            }
-            SystemLogWindow systemLogWindow = new SystemLogWindow();
-            systemLogWindow.Show();
         }
     }
 }

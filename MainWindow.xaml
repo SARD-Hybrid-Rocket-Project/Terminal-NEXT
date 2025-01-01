@@ -6,7 +6,8 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:MissionController"
         mc:Ignorable="d"
-        Title="Terminal XP" Height="720" Width="1280"  WindowStartupLocation="CenterScreen" >
+        Height="720" Width="1280" MinHeight="720" MinWidth="1280"
+        Title="Terminal NEXT" WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -32,35 +33,29 @@
                 <ui:MenuItem Header="ツール" Icon="{ui:SymbolIcon Symbol=Toolbox20}">
                     <MenuItem x:Name="Button_ConnectDB" Header="データベースに接続" Icon="{ui:SymbolIcon Symbol=DatabasePlugConnected20}"/>
                 </ui:MenuItem>
-                <ui:MenuItem Header="表示" Icon="{ui:SymbolIcon Symbol=Desktop20}">
-                    <MenuItem x:Name="Button_SystemLog"  Header="ログ" Icon="{ui:SymbolIcon Symbol=LineHorizontal320}" Click="Button_SystemLog_Click"/>
-                </ui:MenuItem>
+                <!--<ui:MenuItem Header="表示" Icon="{ui:SymbolIcon Symbol=Desktop20}">
+                </ui:MenuItem>-->
             </Menu>
             <ui:TextBlock x:Name="TextBlock_CurrentDate" Text="YYYY/MM/DD 00:00:00" Margin="10,5,10,5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20"/>
         </Grid>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <RichTextBox x:Name="RichTextBox_LogDisplay" Background="Black" Foreground="White" IsReadOnly="True" Focusable="True" FontSize="16" Grid.ColumnSpan="2" SelectionTextBrush="Black" Cursor="IBeam" Grid.Column="1">
-                    <RichTextBox.Document>
-                        <FlowDocument LineHeight="12" LineStackingStrategy="BlockLineHeight"/>
-                    </RichTextBox.Document>
-                </RichTextBox>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
-                    <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="Button_InputBox_CommandSend_Click"/>
-                </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--<RichTextBox x:Name="RichTextBox_Timeline" Background="Black" Foreground="White" IsReadOnly="True" Focusable="True" FontSize="16" Cursor="IBeam" Grid.Column="1">
+                <RichTextBox.Document>
+                    <FlowDocument/>
+                </RichTextBox.Document>
+            </RichTextBox>-->
+            <RichTextBox Name="RichTextBox_Timeline" Grid.Row="0" IsReadOnly="True" Focusable="True" Background="Black" Margin="0"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
+                <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="Button_InputBox_CommandSend_Click"/>
             </Grid>
         </Grid>
         <Grid VerticalAlignment="Bottom" Background="#FFB941D7" Grid.Row="2">
@@ -72,7 +67,7 @@
                 <ui:SymbolIcon x:Name="Icon_SignalStrength" Margin="5" Foreground="White" Symbol="CellularData124"/>
                 <TextBlock x:Name="TextBlock_SignalStrength" Text="電波強度" Foreground="White" VerticalAlignment="Center"/>
             </StackPanel>
-            <ui:TextBlock Text="互換モードで実行中" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+            <ui:TextBlock Text="Alpha Version" Margin="5" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
         </Grid>
     </Grid>
 </Window>

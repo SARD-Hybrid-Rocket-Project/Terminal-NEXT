@@ -10,8 +10,9 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using log4net;
 using MissionController.Core;
-using MissionController.Core.Logging;
+using MissionController.Resources;
 using MissionController.Views;
+using static MissionController.Core.WirelessModuleManager;
 
 namespace MissionController
 {
@@ -21,41 +22,44 @@ namespace MissionController
     public partial class App : Application
     {
         //ロガー
-        private static readonly ILog log = LogManager.GetLogger(typeof(App));
-        internal FlowDocumentManager SystemLogDocument { get; private set; } = new FlowDocumentManager();
+        private static readonly ILog log = LogManager.GetLogger("TimelineLogger");
+        internal Timeline timeline { get; private set; } = new Timeline();
+
         //UI関連
         internal MainWindow? mainWindow;
         //無線接続関連
-        internal WirelessModule wirelessModule { get; private set; }
+        internal WirelessModuleManager wirelessModule { get; private set; }
+        internal IM920SL im920sl { get; private set; }
 
         //環境変数・プロファイルのクラス
-        public ApplicationProfile Profile { get; private set; }
         public EnvironmentConfiguration Config { get; private set; }
 
         public App()
         {
             //log4netの初期化
             log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
-            log.Info("Initialized log4net");
+            log.Debug("Initialized log4net");
 
             //環境設定ファイル読み込み
             Config = EnvironmentConfiguration.ReadConfiguration();
             log.Info("Read configuration file");
-
-            //アプリのインスタンス情報を新規作成
-            Profile = new ApplicationProfile();
-            log.Debug("Created application profile");
+            timeline.Debug("Read configuration file");
 
             //ワイヤレスモジュールの制御クラスをインスタンス化し、イベントを設定
-            wirelessModule = new WirelessModule()
+            wirelessModule = new WirelessModuleManager()
             {
-                DataReceivedEvent = WirelessModuleDataReceived,
-                CommandResponceEvent = CommandResponceEventHandler
+                //DataReceivedEvent = WirelessModuleDataReceived,
+                //CommandResponceEvent = CommandResponceEventHandler
             };
+            im920sl = new IM920SL();
+            im920sl.DataReceivedEvent += DataReceivedEventHandler;
             log.Debug("WirelessModuleクラスのインスタンスwirelessModuleを初期化");
+
 
             //コンストラクタの最後でMainWindowを初期化する。表示はしない。
             mainWindow = new MainWindow();
+
+            timeline.Info($"{Resource.ApplicationName}へようこそ");
         }
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -64,59 +68,54 @@ namespace MissionController
             mainWindow?.Show();
         }
 
-        //イベントハンドラ
-        /// <summary>
-        /// シリアルポート受信時のイベント
-        /// </summary>
-        private void WirelessModuleDataReceived(Packet32 packet)
-        {
-            Debug.WriteLine($"{packet.Timestamp}\nノード番号は{packet.NodeNumber}\n信号強度は{packet.RSSI}\nカテゴリは{packet.Type}\n内容は{packet.Data}");
-        }
-        private void CommandResponceEventHandler(string responce)
-        {
-            Debug.WriteLine($"Received:at Command");
-        }
+        
 
         //メソッドとか
-        public void Send(Packet32 packet)
+        public void Connect()
+        {
+            PortSelectionDialog dialog = new PortSelectionDialog() { Owner = mainWindow ?? null };
+            bool? result = dialog.ShowDialog();
+            Debug.WriteLine(result);
+
+            if (result == true)
+            {
+                SerialPortSettings serialPortInformation = new SerialPortSettings(
+                    dialog.ComboBox_PortList.SelectedValue?.ToString() ?? string.Empty,
+                    Convert.ToInt32(dialog.ComboBox_Baudlate.SelectedValue));
+                timeline.Info($"以下のポートに接続を試みます\n{dialog.ComboBox_PortList.SelectedValue?.ToString()}\n{dialog.ComboBox_PortList.SelectedItem}");
+
+                try
+                {
+                    wirelessModule.Connect(serialPortInformation);
+                    timeline.Info("接続しました");
+                }
+                catch (Exception e)
+                {
+                    timeline.Error($"接続に失敗しました\n{e.ToString()}");
+                }
+            }
+        }
+        public void Send(SmartPacket packet)
         {
             Packet32Serializer.Serialize(packet);
         }
 
-
-
-
-
-        
+        //イベントハンドラ
         /// <summary>
-        /// コマンドレスポンスのイベントハンドラ
+        /// シリアルポート受信時のイベント
         /// </summary>
-        /// <param name="responce"></param>
-        
-        
-        //internal void LogAddEvent(LogData data)
-        //{
-        //    //ログ追加時の処理
-        //    Paragraph log = new Paragraph();//ログの段落
-        //    log.FontFamily = new FontFamily("Consolas");
-
-        //    Run logAttribute = new Run(" " + data.Type.ToString() + " ");
-        //    Run time = new Run(data.Time.ToString(" HH:mm:ss:fff "));//時間
-        //    switch (data.Type)
-        //    {
-        //        case LogType.LOG:
-        //            logAttribute.Background = Brushes.White;
-        //            break;
-        //        case LogType.DEBUG:
-        //            logAttribute.Background = Brushes.Green;
-        //            break;
-        //    }
-        //    log.Inlines.Add(logAttribute);
-        //    log.Inlines.Add(time);
-        //    log.Inlines.Add(data.Content);
-        //    mainWindow.TextBox_DebugLog.Document.Blocks.Add(log);
-        //    mainWindow.TextBox_DebugLog.ScrollToEnd();
-        //}
+        private void DataReceivedEventHandler(object sender, SerialDataReceivedEventArgs e)
+        {
+            var r = ((SerialPort)sender).ReadExisting();
+            if (r.StartsWith("00,"))
+            {
+                SmartPacket packet = Packet32Serializer.Deserialize(r);
+            }
+            //受信データではない場合はコマンドレスポンスとして扱う
+            else
+            {
+            }
+        }
     }
 
 }

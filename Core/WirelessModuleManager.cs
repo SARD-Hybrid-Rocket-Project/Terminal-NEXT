@@ -12,24 +12,21 @@ using System.Windows;
 
 namespace MissionController.Core
 {
-    public delegate void WMDataReceivedEventHandler(Packet32 packet32);
     public delegate void WMCommandResponceEventHandler(string data);
     public enum WirelessModuleType
     {
         IM920, IM920SL, Xbee//IM920とXbeeは実装未定
     }
-    internal class WirelessModule
+    internal class WirelessModuleManager
     {
         //ロガー
-        private static readonly ILog log = LogManager.GetLogger(typeof(WirelessModule));
+        private static readonly ILog log = LogManager.GetLogger(typeof(WirelessModuleManager));
         //変数
         internal bool IsSending { get; private set; }
         internal byte RSSI { get; private set; }
         internal SerialPort serialPort { get; private set; }
 
         //イベント
-        internal WMDataReceivedEventHandler? DataReceivedEvent;
-        internal WMCommandResponceEventHandler? CommandResponceEvent;
         internal WirelessModuleType wirelessModuleType = WirelessModuleType.IM920SL;//要修正
         //バッファ
         internal string[] ReceivedDataBuffer { get; private set; } = new string[0];
@@ -38,7 +35,7 @@ namespace MissionController.Core
         {
             Command = 0, Broadcast = 1, Unicast = 2
         }
-        internal WirelessModule()
+        internal WirelessModuleManager()
         {
             IsSending = false;
             serialPort = new SerialPort();
@@ -73,8 +70,7 @@ namespace MissionController.Core
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Failed to connect port {e.Message}");
-                return false;
+                throw;
             }
             return true;
         }
@@ -180,15 +176,14 @@ namespace MissionController.Core
             //処理負荷を軽減するため、aa,bbbb,dd:のカンマとコロンの位置で判定する。
             if (r.StartsWith("00,"))
             {
-                Packet32 packet = Packet32Serializer.Deserialize(r);
+                SmartPacket packet = Packet32Serializer.Deserialize(r);
                 RSSI = packet.RSSI;
                 //アビオニクスからのデータ受信イベントを発火
-                DataReceivedEvent?.Invoke(packet);
+                //DataReceivedEvent?.Invoke(packet);
             }
             else
             {
                 //コマンドレスポンスの場合
-                CommandResponceEvent?.Invoke(r);
             }
         }
 
