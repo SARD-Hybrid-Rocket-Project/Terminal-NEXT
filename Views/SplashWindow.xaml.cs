@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MissionController.Views
+namespace SARD.Views
 {
     /// <summary>
     /// SplashWindow.xaml の相互作用ロジック

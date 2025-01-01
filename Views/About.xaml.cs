@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MissionController.Views
+namespace SARD.Views
 {
     /// <summary>
     /// About.xaml の相互作用ロジック
@@ -23,8 +23,8 @@ namespace MissionController.Views
         {
             InitializeComponent();
 
-            this.Title = MissionController.Resources.Resource.ApplicationName;
-            TextBlock_ApplicationTitle.Text = MissionController.Resources.Resource.ApplicationName;
+            this.Title = SARD.Resources.Resource.ApplicationName;
+            TextBlock_ApplicationTitle.Text = SARD.Resources.Resource.ApplicationName;
         }
         private void Button_Ok_Click(object sender, RoutedEventArgs e)
         {

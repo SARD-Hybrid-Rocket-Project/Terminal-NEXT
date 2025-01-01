@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace MissionController
+namespace SARD
 {
     internal class TimelineAppender : AppenderSkeleton
     {

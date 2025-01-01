@@ -10,11 +10,11 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml.Linq;
 using log4net;
-using MissionController.Core;
-using MissionController.Resources;
-using MissionController.Views;
+using SARD.Core;
+using SARD.Resources;
+using SARD.Views;
 
-namespace MissionController
+namespace SARD
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -64,7 +64,7 @@ namespace MissionController
             //コンストラクタの最後でMainWindowを初期化する。表示はしない。
             mainWindow = new MainWindow();
 
-            timeline.Info("初期化が完了しました");
+            timeline.Debug("初期化が完了しました");
         }
         protected override void OnStartup(StartupEventArgs e)
         {

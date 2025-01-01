@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 
-namespace MissionController.Core
+namespace SARD.Core
 {
     //クソコードですまん
     public class Timeline

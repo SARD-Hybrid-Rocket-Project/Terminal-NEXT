@@ -1,4 +1,4 @@
-﻿using MissionController.Views;
+﻿using SARD.Views;
 using System.IO.Ports;
 using System.Text;
 using System.Windows;
@@ -11,10 +11,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using MissionController.Core;
+using SARD.Core;
 using System.Diagnostics;
 
-namespace MissionController
+namespace SARD
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -33,7 +33,7 @@ namespace MissionController
             RichTextBox_Timeline.Document = app.timeline.TimelineDocument;
 
             //ウィンドウのタイトルを設定
-            this.Title = MissionController.Resources.Resource.ApplicationName;
+            this.Title = SARD.Resources.Resource.ApplicationName;
             //時計の更新
             timer = new Timer((state) =>
             {

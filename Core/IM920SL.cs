@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace MissionController.Core
+namespace SARD.Core
 {
     public class IM920SL : WirelessModule
     {

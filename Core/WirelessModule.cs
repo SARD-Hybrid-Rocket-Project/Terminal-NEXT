@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MissionController.Core
+namespace SARD.Core
 {
     public class WirelessModule
     {
