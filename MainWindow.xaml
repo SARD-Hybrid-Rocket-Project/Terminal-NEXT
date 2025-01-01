@@ -21,17 +21,20 @@
             </Grid.ColumnDefinitions>
             <Menu>
                 <ui:MenuItem Header="ファイル" Icon="{ui:SymbolIcon Symbol=List20}">
-                    <MenuItem x:Name="Button_NewConnection" Header="新規接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="MenuItem_NewConnection_Click"/>
-                    <MenuItem x:Name="Button_Disconnect" Header="切断" Icon="{ui:SymbolIcon Symbol=PlugDisconnected20}" IsEnabled="False" Click="Button_Disconnect_Click"/>
-                    <MenuItem x:Name="Button_EnvironmentalSetting" Header="環境設定" Icon="{ui:SymbolIcon Symbol=WrenchScrewdriver20}" Click="Button_EnvironmentalSetting_Click"/>
+                    <MenuItem x:Name="Button_NewConnection" Header="接続" Icon="{ui:SymbolIcon Symbol=Add20}" Click="E_PortConnect"/>
+                    <MenuItem x:Name="Button_Disconnect" Header="切断" Icon="{ui:SymbolIcon Symbol=PlugDisconnected20}" IsEnabled="False" Click="E_PortDisConnect"/>
+                    <MenuItem x:Name="Button_EnvironmentalSetting" Header="環境設定" Icon="{ui:SymbolIcon Symbol=WrenchScrewdriver20}" Click="MenuItem_Click"/>
                     <Separator/>
                     <MenuItem x:Name="Button_Quit" Header="終了" Icon="{ui:SymbolIcon Symbol=Dismiss20}"/>
                 </ui:MenuItem>
                 <ui:MenuItem Header="編集" Icon="{ui:SymbolIcon Symbol=Edit20}">
-                    <MenuItem x:Name="Button_Setting" Header="設定" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
+                    <MenuItem x:Name="Button_Setting" Header="設定" Click="MenuItem_Click" Icon="{ui:SymbolIcon Symbol=Settings20}"/>
                 </ui:MenuItem>
                 <ui:MenuItem Header="ツール" Icon="{ui:SymbolIcon Symbol=Toolbox20}">
-                    <MenuItem x:Name="Button_ConnectDB" Header="データベースに接続" Icon="{ui:SymbolIcon Symbol=DatabasePlugConnected20}"/>
+                    <MenuItem x:Name="Button_ConnectDB" Header="データベースに接続" Click="MenuItem_Click" Icon="{ui:SymbolIcon Symbol=DatabasePlugConnected20}"/>
+                </ui:MenuItem>
+                <ui:MenuItem Header="ヘルプ" Icon="{ui:SymbolIcon Symbol=QuestionCircle20}">
+                    <MenuItem x:Name="Button_AboutApplication" Header="About" Icon="{ui:SymbolIcon Symbol=BookQuestionMark20}" Click="E_AboutApplication"/>
                 </ui:MenuItem>
                 <!--<ui:MenuItem Header="表示" Icon="{ui:SymbolIcon Symbol=Desktop20}">
                 </ui:MenuItem>-->
@@ -54,8 +57,8 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ui:AutoSuggestBox x:Name="InputBox_CommandInput" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
-                <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="Button_InputBox_CommandSend_Click"/>
+                <ui:AutoSuggestBox x:Name="AutoSuggestBox_Command" Icon="{ui:SymbolIcon Symbol=Empty}" PlaceholderText="ここに入力" KeyDown="InputBox_CommandInput_KeyDown"/>
+                <ui:Button x:Name="Button_InputBox_CommandSend" Content="Send" Appearance="Primary" Grid.Column="1" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="E_Send"/>
             </Grid>
         </Grid>
         <Grid VerticalAlignment="Bottom" Background="#FFB941D7" Grid.Row="2">

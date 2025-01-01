@@ -18,6 +18,8 @@ namespace MissionController.Core
         //ロガー
         private static readonly ILog log = LogManager.GetLogger("TimelineLogger");
         public FlowDocument TimelineDocument { get; private set; }
+        //イベント
+        public event EventHandler? TimelineUpdateEvent;
 
         public Timeline()
         {
@@ -25,7 +27,7 @@ namespace MissionController.Core
             {
                 Background = System.Windows.Media.Brushes.Black,
                 Foreground = System.Windows.Media.Brushes.White,
-                FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+                FontFamily = new System.Windows.Media.FontFamily("consolas"),
                 LineStackingStrategy = LineStackingStrategy.MaxHeight,
                 FontSize = 16,
                 PagePadding = new Thickness(0),
@@ -34,43 +36,43 @@ namespace MissionController.Core
         }
         public void Debug(string message)
         {
-            Add(Timeline.Level.DEBUG, DateTime.Now, message);
+            Logging(Timeline.Level.DEBUG, DateTime.Now, message);
         }
         public void Debug(DateTime date, string message)
         {
-            Add(Timeline.Level.DEBUG, date, message);
+            Logging(Timeline.Level.DEBUG, date, message);
         }
         public void Info(string message)
         {
-            Add(Timeline.Level.INFO, DateTime.Now, message);
+            Logging(Timeline.Level.INFO, DateTime.Now, message);
         }
         public void Info(DateTime date, string message)
         {
-            Add(Timeline.Level.INFO, date, message);
+            Logging(Timeline.Level.INFO, date, message);
         }
         public void Warn(string message)
         {
-            Add(Timeline.Level.WARN, DateTime.Now, message);
+            Logging(Timeline.Level.WARN, DateTime.Now, message);
         }
         public void Warn(DateTime date, string message)
         {
-            Add(Timeline.Level.WARN, date, message);
+            Logging(Timeline.Level.WARN, date, message);
         }
         public void Error(string message)
         {
-            Add(Timeline.Level.ERROR, DateTime.Now, message);
+            Logging(Timeline.Level.ERROR, DateTime.Now, message);
         }
         public void Error(DateTime date, string message)
         {
-            Add(Timeline.Level.ERROR, date, message);
+            Logging(Timeline.Level.ERROR, date, message);
         }
         public void Fatal(string message)
         {
-            Add(Timeline.Level.FATAL, DateTime.Now, message);
+            Logging(Timeline.Level.FATAL, DateTime.Now, message);
         }
         public void Fatal(DateTime date, string message)
         {
-            Add(Timeline.Level.FATAL, date, message);
+            Logging(Timeline.Level.FATAL, date, message);
         }
         public void LineBreak()
         {
@@ -78,49 +80,48 @@ namespace MissionController.Core
         }
         public enum Level
         {
-            DEBUG, INFO, WARN, ERROR, FATAL
+            DEBUG = 0, INFO = 1, WARN = 2, ERROR = 3, FATAL = 4
         }
-        private void Add(Timeline.Level level, DateTime time ,string message)
+        public void Logging(Timeline.Level level, DateTime time ,string message)
         {
             Paragraph paragraph = new Paragraph();
 
+            //ログメッセージをフォーマット
             // 改行コードを検知して、その後に指定した数の空白を挿入
             string spaceString = new string(' ', 19); // 指定した数の空白文字を生成
             message = message.Replace("\n", "\n" + spaceString); // 改行後に空白を挿入
-
-            
+            Run m = new Run(message);
 
             //時間をフォーマット
-            Run t = new Run(time.ToString("HH:mm:ss:fff") + " ");
+            string date = time.ToString("HH:mm:ss:fff");
+            Run t = new Run(date + " ");
             //ログの属性によって色分けを設定
             Run logAttribute = new Run(level.ToString().PadRight(5) + " ");
             switch (level)
             {
                 case Level.DEBUG:
-                    log.Debug(time.ToString() + " " + message);
+                    log.Debug(date + " " + message);
                     logAttribute.Foreground = System.Windows.Media.Brushes.LightGreen;
                     break;
                 case Level.INFO:
-                    log.Info(time.ToString() + " " + message);
+                    log.Info(date + " " + message);
                     logAttribute.Foreground = System.Windows.Media.Brushes.White;
                     break;
                 case Level.WARN:
-                    log.Warn(time.ToString() + " " + message);
+                    log.Warn(date + " " + message);
                     logAttribute.Foreground = System.Windows.Media.Brushes.Orange;
                     break;
                 case Level.ERROR:
-                    log.Error(time.ToString() + " " + message);
+                    log.Error(date + " " + message);
                     logAttribute.Foreground = System.Windows.Media.Brushes.Red;
                     break;
                 case Level.FATAL:
-                    log.Fatal(time.ToString() + " " + message);
+                    log.Fatal(date + " " + message);
                     logAttribute.Foreground = System.Windows.Media.Brushes.IndianRed;
                     break;
                 default:
                     break;
             }
-            //ログメッセージをフォーマット
-            Run m = new Run(message);
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -132,6 +133,8 @@ namespace MissionController.Core
                 paragraph.Margin = new Thickness(0);
                 paragraph.TextAlignment = TextAlignment.Left;
                 TimelineDocument.Blocks.Add(paragraph);
+
+                TimelineUpdateEvent?.Invoke(this, new EventArgs());
             });
         }
     }

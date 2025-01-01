@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -20,23 +21,16 @@ namespace MissionController.Core
             Close();
         }
         //メソッド
-        internal async void Send(WirelessModuleSendMode mode, string message)
+        internal void Send(ushort targetNode, string message)
         {
             string userData = string.Empty;
-            switch (mode)
-            {
-                case WirelessModuleSendMode.Command:
-                    break;
-                case WirelessModuleSendMode.BroadCast:
-                    userData = $"TXDA{message}";
-                    break;
-                case WirelessModuleSendMode.UniCast:
-                    userData = $"TXDU{UnicastTargetID},{message}";
-                    break;
-                default:
-                    break;
-            }
-            await Send(userData);
+
+            if(targetNode == 0xFFFF) userData = $"{message}\r\n";
+            else if (targetNode == 0) userData = $"TXDA {message}\r\n";
+            else if (targetNode >= 1) userData = $"TXDU {targetNode:X4},{message}\r\n";
+
+            Debug.WriteLine(userData);
+            Send(userData);
         }
     }
 }

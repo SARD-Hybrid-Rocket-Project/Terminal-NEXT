@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace MissionController.Core
 {
-    public enum WirelessModuleSendMode
-    {
-        Command = 0, BroadCast = 1, UniCast = 2
-    }
     public class WirelessModule
     {
         //プロパティ
@@ -27,7 +23,7 @@ namespace MissionController.Core
 
         protected bool IsSending { get; set; } = false;
 
-        protected SerialPort Port { get; set; } = new SerialPort();
+        public SerialPort Port { get; private set; } = new SerialPort();
 
         //コンストラクタ・デストラクタ
         internal WirelessModule()
@@ -47,26 +43,14 @@ namespace MissionController.Core
         /// <param name="baudRate">シリアルポートのボーレートを指定します</param>
         internal void Open(string portName, int baudRate)
         {
-            //ポートが開いている場合は閉じる
-            if (Port.IsOpen) Port.Close();
-            try
-            {
-                Port = new SerialPort(portName, baudRate);
-                Port.Open();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            Port.PortName = portName;
+            Port.BaudRate = baudRate;
+            Port.Open();
         }
         internal void Close()
         {
-            //ポートが開いている場合は閉じる
-            if (Port.IsOpen)
-            {
-                Port.Close();
-                Port.Dispose();
-            }
+            Port.Close();
+            //Port.Dispose();
         }
         /// <summary>
         /// データを送信します
@@ -74,19 +58,11 @@ namespace MissionController.Core
         /// <param name="mode"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected async Task Send(string data)
+        protected void Send(string data)
         {
-            if (!Port.IsOpen || IsSending) return;
-            await Task.Run(() =>
-            {
-                try
-                {
-                    IsSending = true;
-                    Port.WriteLine(data);
-                    IsSending = false;
-                }
-                catch (Exception) { throw; }
-            });
+            IsSending = true;
+            Port.Write(data);
+            IsSending = false;
         }
     }
 }

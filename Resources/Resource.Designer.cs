@@ -70,6 +70,24 @@ namespace MissionController.Resources {
         }
         
         /// <summary>
+        ///   https://x.com/HybridSard に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Contact_Twitter {
+            get {
+                return ResourceManager.GetString("Contact_Twitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   https://muroransard.wixsite.com/sard に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Contact_Web {
+            get {
+                return ResourceManager.GetString("Contact_Web", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   SARD に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Developer {

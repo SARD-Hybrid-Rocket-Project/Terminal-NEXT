@@ -12,7 +12,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using MissionController.Core;
-using static MissionController.Core.WirelessModuleManager;
 using System.Diagnostics;
 
 namespace MissionController
@@ -26,10 +25,6 @@ namespace MissionController
         private App app = (App)App.Current;
         //時計用のタイマー
         private Timer timer;
-
-        //ボタンのクリックイベント
-        private void MenuItem_NewConnection_Click(object sender, RoutedEventArgs e) { ConnectSerialPort(); }
-        private void Button_Disconnect_Click(object sender, RoutedEventArgs e) { DisconnectSerialPort(); }
         public MainWindow()
         {
             InitializeComponent();
@@ -62,15 +57,13 @@ namespace MissionController
         {
 
         }
-        internal void UpdateSignalStrength()
+        internal void UpdateSignalStrength(byte rssi)
         {
-            byte rssi = app.wirelessModule.RSSI;
-            //後で処理追加
             if (rssi >= Convert.ToByte(255))
             {
                 Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularData120;
             }
-            else if(rssi >= Convert.ToByte(100))
+            else if (rssi >= Convert.ToByte(100))
             {
                 Icon_SignalStrength.Symbol = Wpf.Ui.Controls.SymbolRegular.CellularData220;
             }
@@ -87,11 +80,12 @@ namespace MissionController
         /// </summary>
         private void RefreshWindow()
         {
-            if (app.wirelessModule.serialPort.IsOpen)
+            if (app.wirelessModule.Port.IsOpen)
             {
                 Button_NewConnection.IsEnabled = false;
                 Button_Disconnect.IsEnabled = true;
 
+                AutoSuggestBox_Command.IsEnabled = true;
                 Button_InputBox_CommandSend.IsEnabled = true;
             }
             else
@@ -99,25 +93,9 @@ namespace MissionController
                 Button_NewConnection.IsEnabled = true;
                 Button_Disconnect.IsEnabled = false;
 
+                AutoSuggestBox_Command.IsEnabled = false;
                 Button_InputBox_CommandSend.IsEnabled = false;
             }
-        }
-        /// <summary>
-        /// シリアルポートに接続する
-        /// </summary>
-        private void ConnectSerialPort()
-        {
-            app.Connect();
-
-            RefreshWindow();
-        }
-        /// <summary>
-        /// シリアルポートから切断する
-        /// </summary>
-        private void DisconnectSerialPort()
-        {
-            app.wirelessModule.Disconnect();
-            RefreshWindow();
         }
         /// <summary>
         /// ログ表示
@@ -137,10 +115,26 @@ namespace MissionController
 
 
         //ボタンのクリックイベント
-
+        private void E_PortConnect(object sender, RoutedEventArgs e)
+        {
+            
+            app.SerialPortConnect();
+            RefreshWindow();
+        }
+        private void E_PortDisConnect(object sender, RoutedEventArgs e)
+        {
+            app.SerialPortDisconnect();
+            RefreshWindow();
+        }
+        private void E_Send(object sender, RoutedEventArgs e)
+        {
+            if(AutoSuggestBox_Command.Text != string.Empty) app.Send(AutoSuggestBox_Command.Text);
+            AutoSuggestBox_Command.Text = string.Empty;
+        }
+        private void E_AboutApplication(object sender, RoutedEventArgs e) { new About { Owner = this }.ShowDialog(); }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            RichTextBox_Timeline.Document = app.timeline.TimelineDocument;
+            MessageBox.Show("未実装です。ごめんなさい");
         }
 
         private void Button_EnvironmentalSetting_Click(object sender, RoutedEventArgs e)
@@ -154,7 +148,7 @@ namespace MissionController
 
         private void InputBox_CommandInput_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Enter) E_Send(sender, e);
         }
 
         private void Button_InputBox_CommandSend_Click(object sender, RoutedEventArgs e)

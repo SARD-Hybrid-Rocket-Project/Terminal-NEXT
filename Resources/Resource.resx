@@ -120,6 +120,12 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>Terminal NEXT</value>
   </data>
+  <data name="Contact_Twitter" xml:space="preserve">
+    <value>https://x.com/HybridSard</value>
+  </data>
+  <data name="Contact_Web" xml:space="preserve">
+    <value>https://muroransard.wixsite.com/sard</value>
+  </data>
   <data name="Developer" xml:space="preserve">
     <value>SARD</value>
   </data>
